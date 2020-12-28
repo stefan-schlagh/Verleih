@@ -1,5 +1,7 @@
 package model.database;
 
+import controller.dbqueries.StaffQueries;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,17 +13,13 @@ public class Database {
         d.init();
     }
 
-    Connection con;
-
-    //tabPane
-
-    public Database(){
-        init();
+    public static Connection getConnection() throws SQLException{
+        return DriverManager.getConnection("jdbc:sqlite:Verleih.db");
     }
     public void init(){
         try{
             // create connection
-            con = DriverManager.getConnection("jdbc:sqlite:Verleih.db");
+            Connection con = getConnection();
             /*
                 create tables
                     product
@@ -55,6 +53,13 @@ public class Database {
                         "endDate TEXT," +
                         "returned INTEGER" +
                     ")");
+            /*
+                add admin account in staff
+                    is admin already existing?
+             */
+            if(!StaffQueries.doesStaffMemberExist("admin")){
+                StaffQueries.addStaffMember("admin","password");
+            }
         }catch(SQLException e){
             System.out.println(e.getMessage());
             e.printStackTrace();

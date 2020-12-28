@@ -1,0 +1,16 @@
+#login-header {
+    -fx-font-size: 25px;
+    -fx-alignment: center;
+    -fx-content-display: center;
+    -fx-padding: 10px;
+}
+.login-label {
+    -fx-font-size: 16px;
+    -fx-padding: 5px;
+}
+.login-text {
+    -fx-padding: 5px;
+}
+#btn-submit {
+    -fx-start-margin: 5px;
+}
