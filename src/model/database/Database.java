@@ -1,5 +1,6 @@
 package model.database;
 
+import controller.dbqueries.ExceptionLog;
 import controller.dbqueries.StaffQueries;
 
 import java.sql.Connection;
@@ -17,9 +18,10 @@ public class Database {
         return DriverManager.getConnection("jdbc:sqlite:Verleih.db");
     }
     public void init(){
+        Connection con = null;
         try{
             // create connection
-            Connection con = getConnection();
+            con = getConnection();
             /*
                 create tables
                     product
@@ -61,9 +63,15 @@ public class Database {
             if(!StaffQueries.doesStaffMemberExist("admin")){
                 StaffQueries.addStaffMember("admin","password");
             }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch(SQLException e){
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
         }
     }
 }
