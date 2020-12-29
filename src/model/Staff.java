@@ -3,22 +3,22 @@ package model;
 public class Staff {
 
     private int sid;
-    private String sName;
+    private String name;
 
     public Staff(int sid, String sName){
         this.sid = sid;
-        this.sName = sName;
+        this.name = sName;
     }
 
     public int getSid() {
         return sid;
     }
 
-    public String getsName() {
-        return sName;
+    public String getName() {
+        return name;
     }
 
-    public void setsName(String sName) {
-        this.sName = sName;
+    public void setName(String sName) {
+        this.name = sName;
     }
 }

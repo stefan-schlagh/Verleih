@@ -33,7 +33,8 @@ public class Database {
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS customer (" +
                         "cid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "cName TEXT" +
+                        "firstname TEXT, " +
+                        "lastname TEXT" +
                     ");");
             // staff
             con.createStatement().execute("" +
