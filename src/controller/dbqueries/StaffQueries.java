@@ -4,6 +4,8 @@ import model.database.Database;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -18,9 +20,13 @@ public class StaffQueries {
         String hashedPw = hash(password);
 
         try {
-            Database.getConnection().createStatement().execute(
+            Connection con = Database.getConnection();
+            PreparedStatement st = con.prepareStatement("" +
                     "INSERT INTO staff (sName,password) " +
-                            "VALUES ('" + name + "','" + hashedPw + "')");
+                    "VALUES (?, ?);");
+            st.setString(1,name);
+            st.setString(2,hashedPw);
+            st.executeUpdate();
         }catch (SQLException e){
             //PrintWriter pw = new PrintWriter("error.log");
             ExceptionLog.write(e);
@@ -58,10 +64,13 @@ public class StaffQueries {
      * @throws SQLException throws SQLException
      */
     public static String getPassword(String name) throws SQLException{
-        ResultSet res = Database.getConnection().createStatement().executeQuery("" +
+        Connection con = Database.getConnection();
+        PreparedStatement st = con.prepareStatement("" +
                 "SELECT password " +
                 "FROM staff " +
-                "WHERE sName = '" + name + "';");
+                "WHERE sName = ?;");
+        st.setString(1,name);
+        ResultSet res = st.executeQuery();
         if(res.next())
             return res.getString(1);
         else {
@@ -76,10 +85,13 @@ public class StaffQueries {
      * @throws SQLException throws SQLException
      */
     public static int getIdOfStaff(String name) throws SQLException{
-        ResultSet res = Database.getConnection().createStatement().executeQuery("" +
+        Connection con = Database.getConnection();
+        PreparedStatement st = con.prepareStatement("" +
                 "SELECT sid " +
                 "FROM staff " +
-                "WHERE sName = '" + name + "';");
+                "WHERE sName = ?;");
+        st.setString(1,name);
+        ResultSet res = st.executeQuery();
         if(res.next())
             return res.getInt(1);
         else {
@@ -94,10 +106,13 @@ public class StaffQueries {
      * @throws SQLException throws SQLException
      */
     public static boolean doesStaffMemberExist(String name) throws SQLException{
-        ResultSet res = Database.getConnection().createStatement().executeQuery("" +
+        Connection con = Database.getConnection();
+        PreparedStatement st = con.prepareStatement("" +
                 "SELECT * " +
                 "FROM staff " +
-                "WHERE sName = '" + name + "';");
+                "WHERE sName = ?;");
+        st.setString(1,name);
+        ResultSet res = st.executeQuery();
         //if there are no results --> does not exist
         return res.next();
     }
