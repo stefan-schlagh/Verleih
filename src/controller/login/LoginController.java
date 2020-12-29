@@ -50,10 +50,10 @@ public class LoginController {
         String password = loginPassword.getText();
         //is name empty?
         if(name.length() < 1)
-            ShowAlert.showInformation("name is empty");
+            ShowAlert.showInformation("name ist leer");
         //is password empty?
         else if(password.length() < 1)
-            ShowAlert.showInformation("password is empty");
+            ShowAlert.showInformation("passwort ist leer");
         else{
             try{
                 int sid = StaffQueries.login(name,password);
