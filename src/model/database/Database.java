@@ -6,12 +6,15 @@ import controller.dbqueries.StaffQueries;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Database {
 
     public static void main(String[] args) {
         Database d = new Database();
         d.init();
+
+        Database.addCustomerData();
     }
 
     public static Connection getConnection() throws SQLException{
@@ -28,8 +31,8 @@ public class Database {
              */
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS article (" +
-                        "pid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "pName TEXT" +
+                        "aid INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "aName TEXT" +
                     ");");
             // customer
             con.createStatement().execute("" +
@@ -68,6 +71,31 @@ public class Database {
         } finally {
             try {
                 if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    public static void addCustomerData(){
+        Connection con = null;
+        Statement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.createStatement();
+            st.executeUpdate("" +
+                    "INSERT INTO customer(firstname,lastname) " +
+                    "VALUES " +
+                        "('Fritz','Mustermann'), " +
+                        "('Hans','Huber'), " +
+                        "('Michael','Müller');");
+        } catch (SQLException e) {
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
                     con.close();
             } catch (SQLException e) {
                 ExceptionLog.write(e);

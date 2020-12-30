@@ -92,7 +92,7 @@ public class CustomerQueries {
     }
 
     /**
-      *
+      * update the Customer
       * @param c Customer
      */
     public static void updateCustomer(Customer c){
