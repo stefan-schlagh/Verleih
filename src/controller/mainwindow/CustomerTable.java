@@ -61,7 +61,6 @@ public class CustomerTable extends TableView<Customer> {
             public void handle(TableColumn.CellEditEvent<Customer, String> event) {
                 String newValue = event.getNewValue();
                 TablePosition<Customer,String> pos = event.getTablePosition();
-                System.out.println("Wert: " + newValue + " Person.Person: " + pos.getRow());
 
                 Customer c = event.getTableView().getItems().get(pos.getRow());
                 c.setColumn(columnIndex,newValue);

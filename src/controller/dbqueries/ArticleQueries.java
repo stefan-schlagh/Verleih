@@ -2,38 +2,36 @@ package controller.dbqueries;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Customer;
+import model.Article;
 import model.database.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerQueries {
+public class ArticleQueries {
     /**
-     * add a new customer
-     * @param firstName the first name of the customer
-     * @param lastName the last name of the customer
+     * add a new article
+     * @param name the name of the article
      * @return the id of the customer
      */
-    public static int addCustomer(String firstName,String lastName) {
+    public static int addArticle(String name) {
         Connection con = null;
         PreparedStatement st1 = null;
         Statement st2 = null;
         try{
             con = Database.getConnection();
             st1 = con.prepareStatement("" +
-                    "INSERT INTO customer (firstname,lastname) " +
-                    "VALUES (?, ?);");
-            st1.setString(1,firstName);
-            st1.setString(2,lastName);
+                    "INSERT INTO article (aName,available) " +
+                    "VALUES (?, 1);");
+            st1.setString(1,name);
             // insert into database
             st1.executeUpdate();
             // get max id
             st2 = con.createStatement();
             ResultSet res = st2.executeQuery("" +
-                    "SELECT max(cid) " +
-                    "FROM customer;");
+                    "SELECT max(aid) " +
+                    "FROM article;");
             res.next();
             return res.getInt(1);
         } catch (SQLException e) {
@@ -53,10 +51,10 @@ public class CustomerQueries {
         return 0;
     }
     /**
-     * creates a list of all customers
-     * @return a list of all customers
+     * creates a list of all articles
+     * @return a list of all articles
      */
-    public static ObservableList<Customer> getCustomerList(){
+    public static ObservableList<Article> getArticleList(){
         Connection con = null;
         Statement st = null;
         try{
@@ -64,18 +62,18 @@ public class CustomerQueries {
             st = con.createStatement();
             ResultSet res = st.executeQuery("" +
                     "SELECT * " +
-                    "FROM customer;");
-            List<Customer> customers = new ArrayList<>();
+                    "FROM article;");
+            List<Article> articles = new ArrayList<>();
             // loop over results
             while(res.next()){
-                int cid = res.getInt(1);
-                String firstName = res.getString(2);
-                String lastName = res.getString(3);
+                int aid = res.getInt(1);
+                String name = res.getString(2);
+                boolean available = res.getInt(3) != 0;
                 // create customer
-                Customer c = new Customer(cid,firstName,lastName);
-                customers.add(c);
+                Article a = new Article(aid,name,available);
+                articles.add(a);
             }
-            return FXCollections.observableArrayList(customers);
+            return FXCollections.observableArrayList(articles);
         } catch (SQLException e) {
             ExceptionLog.write(e);
         } finally {
@@ -91,21 +89,21 @@ public class CustomerQueries {
         return null;
     }
     /**
-      * update the Customer
-      * @param c Customer
+     * update the article
+     * @param a article
      */
-    public static void updateCustomer(Customer c){
+    public static void updateArticle(Article a){
         Connection con = null;
         PreparedStatement st = null;
         try{
             con = Database.getConnection();
             st = con.prepareStatement("" +
-                    "UPDATE customer " +
-                    "SET firstname = ?, lastname = ? " +
-                    "WHERE cid = ?;");
-            st.setString(1,c.getFirstName());
-            st.setString(2,c.getLastName());
-            st.setInt(3,c.getCid());
+                    "UPDATE article " +
+                    "SET aName = ?, available = ? " +
+                    "WHERE aid = ?;");
+            st.setString(1,a.getName());
+            st.setInt(2,a.isAvailable() ? 1 : 0);
+            st.setInt(3,a.getAid());
             st.executeUpdate();
         } catch (SQLException e) {
             ExceptionLog.write(e);

@@ -32,7 +32,8 @@ public class Database {
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS article (" +
                         "aid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "aName TEXT" +
+                        "aName TEXT, " +
+                        "available INTEGER" +
                     ");");
             // customer
             con.createStatement().execute("" +
