@@ -15,6 +15,17 @@ public class Customer {
         this.lastName = new SimpleStringProperty(lastName);
     }
 
+    public void setColumn(int column,String data){
+        switch (column){
+            case 1:
+                setFirstName(data);
+                break;
+            case 2:
+                setLastName(data);
+                break;
+        }
+    }
+
     public int getCid() {
         return cid;
     }

@@ -52,7 +52,6 @@ public class CustomerQueries {
         }
         return 0;
     }
-
     /**
      * creates a list of all customers
      * @return a list of all customers
@@ -90,5 +89,36 @@ public class CustomerQueries {
             }
         }
         return null;
+    }
+
+    /**
+      *
+      * @param c Customer
+     */
+    public static void updateCustomer(Customer c){
+        Connection con = null;
+        PreparedStatement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.prepareStatement("" +
+                    "UPDATE customer " +
+                    "SET firstname = ?, lastname = ? " +
+                    "WHERE cid = ?;");
+            st.setString(1,c.getFirstName());
+            st.setString(2,c.getLastName());
+            st.setInt(3,c.getCid());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
     }
 }
