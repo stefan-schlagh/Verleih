@@ -3,11 +3,13 @@ package controller.mainwindow;
 import controller.dbqueries.ArticleQueries;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import model.Article;
 
 public class ArticleTable extends TableView<Article> {
@@ -18,10 +20,9 @@ public class ArticleTable extends TableView<Article> {
 
         TableColumn<Article, Integer> idCol = new TableColumn<>("Artikelnummer");
         TableColumn<Article, String> nameCol = new TableColumn<>("Artikelname");
+        TableColumn<Article, Boolean> availableCol = new TableColumn<>("verfügbar");
 
-        //TODO availableCol
-
-        getColumns().addAll(idCol,nameCol);
+        getColumns().addAll(idCol,nameCol,availableCol);
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("aid"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -46,6 +47,17 @@ public class ArticleTable extends TableView<Article> {
                 ArticleQueries.updateArticle(a);
             }
         });
+
+        Callback<TableColumn<Article, Boolean>, TableCell<Article, Boolean>> booleanCellFactory =
+                new Callback<TableColumn<Article, Boolean>, TableCell<Article, Boolean>>() {
+                    @Override
+                    public TableCell<Article, Boolean> call(TableColumn<Article, Boolean> p) {
+                        return new CheckBoxTableCell<Article>(false);
+                    }
+                };
+        availableCol.setCellValueFactory(new PropertyValueFactory<Article,Boolean>("available"));
+        availableCol.setCellFactory(booleanCellFactory);
+        availableCol.setEditable(false);
     }
 
     public void addItem(Article a){
