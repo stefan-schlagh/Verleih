@@ -1,39 +1,46 @@
 package model.database;
 
+import controller.dbqueries.ExceptionLog;
 import controller.dbqueries.StaffQueries;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Database {
 
     public static void main(String[] args) {
         Database d = new Database();
         d.init();
+
+        Database.addCustomerData();
     }
 
     public static Connection getConnection() throws SQLException{
         return DriverManager.getConnection("jdbc:sqlite:Verleih.db");
     }
     public void init(){
+        Connection con = null;
         try{
             // create connection
-            Connection con = getConnection();
+            con = getConnection();
             /*
                 create tables
                     product
              */
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS article (" +
-                        "pid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "pName TEXT" +
+                        "aid INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "aName TEXT, " +
+                        "available INTEGER" +
                     ");");
             // customer
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS customer (" +
                         "cid INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "cName TEXT" +
+                        "firstname TEXT, " +
+                        "lastname TEXT" +
                     ");");
             // staff
             con.createStatement().execute("" +
@@ -60,9 +67,40 @@ public class Database {
             if(!StaffQueries.doesStaffMemberExist("admin")){
                 StaffQueries.addStaffMember("admin","password");
             }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch(SQLException e){
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    public static void addCustomerData(){
+        Connection con = null;
+        Statement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.createStatement();
+            st.executeUpdate("" +
+                    "INSERT INTO customer(firstname,lastname) " +
+                    "VALUES " +
+                        "('Fritz','Mustermann'), " +
+                        "('Hans','Huber'), " +
+                        "('Michael','Müller');");
+        } catch (SQLException e) {
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
         }
     }
 }
