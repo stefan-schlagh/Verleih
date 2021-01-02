@@ -1,5 +1,6 @@
 package controller;
 
+import controller.dbqueries.ExceptionLog;
 import controller.login.LoginController;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
@@ -65,7 +66,7 @@ public class Main extends Application {
                 loginController.setLoggedIn(loggedIn);
             }
         }catch (IOException e){
-
+            ExceptionLog.write(e);
         }
     }
 
