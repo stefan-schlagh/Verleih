@@ -1,12 +1,11 @@
 package controller.mainwindow;
 
 import controller.dbqueries.ArticleQueries;
+import controller.mainwindow.articlehistory.ArticleHistory;
+import controller.mainwindow.lendarticle.LendArticle;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
@@ -21,8 +20,10 @@ public class ArticleTable extends TableView<Article> {
         TableColumn<Article, Integer> idCol = new TableColumn<>("Artikelnummer");
         TableColumn<Article, String> nameCol = new TableColumn<>("Artikelname");
         TableColumn<Article, Boolean> availableCol = new TableColumn<>("verfügbar");
+        TableColumn<Article, Button> showHistory = new TableColumn<>("Zeige vergangene V.");
+        TableColumn<Article, Button> lendArticle = new TableColumn<>("Artikel verleihen");
 
-        getColumns().addAll(idCol,nameCol,availableCol);
+        getColumns().addAll(idCol,nameCol,availableCol,showHistory,lendArticle);
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("aid"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -58,6 +59,20 @@ public class ArticleTable extends TableView<Article> {
         availableCol.setCellValueFactory(new PropertyValueFactory<Article,Boolean>("available"));
         availableCol.setCellFactory(booleanCellFactory);
         availableCol.setEditable(false);
+
+        showHistory.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("anzeigen",(Article a) -> {
+
+            ArticleHistory dialog = new ArticleHistory();
+            dialog.showAndWait();
+            return a;
+        }));
+
+        lendArticle.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("verleihen",(Article a) -> {
+
+            LendArticle dialog = new LendArticle();
+            dialog.showAndWait();
+            return a;
+        }));
     }
 
     public void addItem(Article a){

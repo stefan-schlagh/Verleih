@@ -22,7 +22,7 @@ public class CustomerTable extends TableView<Customer> {
 
         TableColumn<Customer,String> nameCol = new TableColumn<>("Name");
 
-        TableColumn<Customer,Button> showActiveCol = new TableColumn("Zeige Positionen");
+        TableColumn<Customer,Button> showActiveCol = new TableColumn<>("Zeige Positionen");
 
         nameCol.getColumns().addAll(firstNameCol,lastNameCol);
         this.getColumns().addAll(nameCol,showActiveCol);
