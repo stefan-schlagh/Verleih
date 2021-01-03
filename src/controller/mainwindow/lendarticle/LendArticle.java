@@ -21,6 +21,9 @@ public class LendArticle extends Stage {
 
         BorderPane rootPane = new BorderPane();
         Scene scene = new Scene(rootPane);
+
+        scene.getStylesheets().add(getClass().getResource("../../../view/mainwindow/lendArticle.css").toExternalForm());
+
         setScene(scene);
 
         try {

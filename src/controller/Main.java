@@ -41,11 +41,8 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         scene.getStylesheets().addAll(
-                getClass().getResource("../view/mainwindow/customer.css").toExternalForm(),
-                getClass().getResource("../view/mainwindow/lendArticle.css").toExternalForm()
+                getClass().getResource("../view/mainwindow/customer.css").toExternalForm()
         );
-
-        scene.getStylesheets().add(getClass().getResource("../view/mainwindow/lendArticle.css").toExternalForm());
 
         stage.setTitle("Verleih");
         stage.setScene(scene);
