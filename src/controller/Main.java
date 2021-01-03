@@ -41,11 +41,11 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         scene.getStylesheets().addAll(
-                getClass().getResource("../view/mainWindow/customer.css").toExternalForm(),
-                getClass().getResource("../view/mainWindow/lendArticle.css").toExternalForm()
+                getClass().getResource("../view/mainwindow/customer.css").toExternalForm(),
+                getClass().getResource("../view/mainwindow/lendArticle.css").toExternalForm()
         );
 
-        scene.getStylesheets().add(getClass().getResource("../view/mainWindow/lendArticle.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../view/mainwindow/lendArticle.css").toExternalForm());
 
         stage.setTitle("Verleih");
         stage.setScene(scene);
@@ -58,7 +58,7 @@ public class Main extends Application {
         try {
             if (loggedIn.getValue()) {
                 //show main window
-                root.setCenter(FXMLLoader.load(getClass().getResource("../view/mainWindow/mainWindow.fxml")));
+                root.setCenter(FXMLLoader.load(getClass().getResource("../view/mainwindow/mainWindow.fxml")));
             } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/login/login.fxml"));
                 //show login window

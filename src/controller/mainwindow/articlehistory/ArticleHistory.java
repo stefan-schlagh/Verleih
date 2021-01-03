@@ -15,7 +15,7 @@ public class ArticleHistory extends Stage {
         super();
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../../../view/mainWindow/articleHistory.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../../../view/mainwindow/articleHistory.fxml"));
 
             Scene scene = new Scene(root);
             setTitle("Artikelverlauf");

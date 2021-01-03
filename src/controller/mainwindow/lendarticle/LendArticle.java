@@ -34,7 +34,7 @@ public class LendArticle extends Stage {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader();
                         Parent lendArticlePane =
-                                fxmlLoader.load(getClass().getResource("../../../view/mainWindow/lendArticle.fxml").openStream());
+                                fxmlLoader.load(getClass().getResource("../../../view/mainwindow/lendArticle.fxml").openStream());
                         rootPane.setCenter(lendArticlePane);
 
                     } catch (IOException e){
