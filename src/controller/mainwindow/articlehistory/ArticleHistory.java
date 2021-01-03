@@ -5,12 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Article;
 
 import java.io.IOException;
 
 public class ArticleHistory extends Stage {
 
-    public ArticleHistory(){
+    public ArticleHistory(Article a){
         super();
 
         try {

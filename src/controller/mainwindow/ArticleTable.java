@@ -67,14 +67,14 @@ public class ArticleTable extends FilterTable<Article> {
 
         showHistory.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("anzeigen",(Article a) -> {
 
-            ArticleHistory dialog = new ArticleHistory();
+            ArticleHistory dialog = new ArticleHistory(a);
             dialog.showAndWait();
             return a;
         }));
 
         lendArticle.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("verleihen",(Article a) -> {
 
-            LendArticle dialog = new LendArticle();
+            LendArticle dialog = new LendArticle(a);
             dialog.showAndWait();
             return a;
         }));

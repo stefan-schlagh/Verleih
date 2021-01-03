@@ -1,0 +1,8 @@
+#header-lendArticle {
+    -fx-font-size: 30 px !important;
+    -fx-padding: 0 0 0 15px;
+}
+.label-lendArticle {
+    -fx-font-size: 16 px;
+    -fx-padding: 0 0 0 10px;
+}

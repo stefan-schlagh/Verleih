@@ -36,12 +36,12 @@ public class MainController implements Initializable {
     private TextField addCustomerLastName;
 
     private ArticleTable articleTable;
-    private CustomerTable customerTable;
+    private ShowCustomerTable customerTable;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            customerTable = new CustomerTable();
+            customerTable = new ShowCustomerTable();
             customerPane.setCenter(customerTable);
 
             articleTable = new ArticleTable();
