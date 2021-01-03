@@ -1,5 +1,7 @@
 package controller.mainwindow;
 
+import TableFilter.FilterTable;
+import TableFilter.Filterable;
 import controller.dbqueries.ArticleQueries;
 import controller.mainwindow.articlehistory.ArticleHistory;
 import controller.mainwindow.lendarticle.LendArticle;
@@ -11,11 +13,14 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import model.Article;
 
-public class ArticleTable extends TableView<Article> {
+import java.io.IOException;
+
+public class ArticleTable extends FilterTable<Article> {
 
     ObservableList<Article> articleObservableList;
 
-    public ArticleTable(){
+    public ArticleTable() throws IOException {
+        super();
 
         TableColumn<Article, Integer> idCol = new TableColumn<>("Artikelnummer");
         TableColumn<Article, String> nameCol = new TableColumn<>("Artikelname");
@@ -23,15 +28,15 @@ public class ArticleTable extends TableView<Article> {
         TableColumn<Article, Button> showHistory = new TableColumn<>("Zeige vergangene V.");
         TableColumn<Article, Button> lendArticle = new TableColumn<>("Artikel verleihen");
 
-        getColumns().addAll(idCol,nameCol,availableCol,showHistory,lendArticle);
+        getTable().getColumns().addAll(idCol,nameCol,availableCol,showHistory,lendArticle);
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("aid"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         articleObservableList = ArticleQueries.getArticleList();
-        setItems(articleObservableList);
+        addData(articleObservableList);
 
-        setEditable(true);
+        getTable().setEditable(true);
         idCol.setEditable(false);
 
         nameCol.setEditable(true);
@@ -62,25 +67,27 @@ public class ArticleTable extends TableView<Article> {
 
         showHistory.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("anzeigen",(Article a) -> {
 
-            ArticleHistory dialog = new ArticleHistory();
+            ArticleHistory dialog = new ArticleHistory(a);
             dialog.showAndWait();
             return a;
         }));
 
         lendArticle.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("verleihen",(Article a) -> {
 
-            LendArticle dialog = new LendArticle();
+            LendArticle dialog = new LendArticle(a);
             dialog.showAndWait();
             return a;
         }));
+
+        addFilterProperty(new Filterable<Article>() {
+            @Override
+            public String getFilterString(Article article) {
+                return article.getName();
+            }
+        });
     }
 
     public void addItem(Article a){
-        articleObservableList.add(a);
-    }
-
-    public void updateItems(){
-        articleObservableList = ArticleQueries.getArticleList();
-        setItems(articleObservableList);
+        addData(a);
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.dbqueries.ExceptionLog;
 import controller.login.LoginController;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
@@ -40,8 +41,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         scene.getStylesheets().addAll(
-                getClass().getResource("../view/login/login.css").toExternalForm(),
-                getClass().getResource("../view/mainWindow/customer/customer.css").toExternalForm()
+                getClass().getResource("../view/mainwindow/customer.css").toExternalForm()
         );
 
         stage.setTitle("Verleih");
@@ -55,7 +55,7 @@ public class Main extends Application {
         try {
             if (loggedIn.getValue()) {
                 //show main window
-                root.setCenter(FXMLLoader.load(getClass().getResource("../view/mainWindow/mainWindow.fxml")));
+                root.setCenter(FXMLLoader.load(getClass().getResource("../view/mainwindow/mainWindow.fxml")));
             } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/login/login.fxml"));
                 //show login window
@@ -65,7 +65,7 @@ public class Main extends Application {
                 loginController.setLoggedIn(loggedIn);
             }
         }catch (IOException e){
-
+            ExceptionLog.write(e);
         }
     }
 

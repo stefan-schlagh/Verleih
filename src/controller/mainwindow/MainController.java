@@ -3,6 +3,7 @@ package controller.mainwindow;
 import controller.ShowAlert;
 import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.CustomerQueries;
+import controller.dbqueries.ExceptionLog;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -13,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import model.Article;
 import model.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,15 +36,19 @@ public class MainController implements Initializable {
     private TextField addCustomerLastName;
 
     private ArticleTable articleTable;
-    private CustomerTable customerTable;
+    private ShowCustomerTable customerTable;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        customerTable = new CustomerTable();
-        customerPane.setCenter(customerTable);
+        try {
+            customerTable = new ShowCustomerTable();
+            customerPane.setCenter(customerTable);
 
-        articleTable = new ArticleTable();
-        articlePane.setCenter(articleTable);
+            articleTable = new ArticleTable();
+            articlePane.setCenter(articleTable);
+        } catch (IOException e){
+            ExceptionLog.write(e);
+        }
     }
 
     @FXML

@@ -5,16 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Article;
 
 import java.io.IOException;
 
 public class ArticleHistory extends Stage {
 
-    public ArticleHistory(){
+    public ArticleHistory(Article a){
         super();
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../../../view/mainWindow/articleHistory.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../../../view/mainwindow/articleHistory.fxml"));
 
             Scene scene = new Scene(root);
             setTitle("Artikelverlauf");

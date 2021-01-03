@@ -8,20 +8,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.login.LoginController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.login.LoginController">
    <children>
-      <Separator prefHeight="7.0" prefWidth="113.0" />
+      <Separator opacity="0.0" prefHeight="7.0" prefWidth="113.0" />
       <VBox fx:id="login_vBox" prefHeight="400.0" prefWidth="426.0">
          <children>
-            <Separator prefWidth="200.0" />
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Separator opacity="0.0" prefWidth="200.0" />
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
             <Label id="login-header" text="Login" />
             <Label styleClass="login-label" text="name" />
             <TextField fx:id="loginName" onKeyPressed="#nameKeyPressed" styleClass="login-text" />
             <Label styleClass="login-label" text="password" />
             <PasswordField fx:id="loginPassword" onKeyPressed="#passwordKeyPressed" styleClass="login-text" />
             <Button id="btn-submit" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#onSubmitClick" text="Submit" />
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
          </children>
       </VBox>
    </children>

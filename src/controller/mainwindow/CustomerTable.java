@@ -1,56 +1,59 @@
 package controller.mainwindow;
 
+import TableFilter.FilterTable;
+import TableFilter.Filterable;
 import controller.dbqueries.CustomerQueries;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Customer;
 
-public class CustomerTable extends TableView<Customer> {
+import java.io.IOException;
+
+public class CustomerTable extends FilterTable<Customer> {
 
     private ObservableList<Customer> customerObservableList;
 
-    public CustomerTable() {
+    public CustomerTable() throws IOException {
+        super();
 
         TableColumn<Customer, String> firstNameCol = new TableColumn<>("Vorname");
         TableColumn<Customer, String> lastNameCol = new TableColumn<>("Nachname");
 
         TableColumn<Customer,String> nameCol = new TableColumn<>("Name");
 
-        TableColumn<Customer,Button> showActiveCol = new TableColumn<>("Zeige Positionen");
-
         nameCol.getColumns().addAll(firstNameCol,lastNameCol);
-        this.getColumns().addAll(nameCol,showActiveCol);
+        getTable().getColumns().addAll(nameCol);
 
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        //showActiveCol.setCellValueFactory(new PropertyValueFactory<>("Dummy"));
-
-        showActiveCol.setCellFactory(ActionButtonTableCell.<Customer>forTableColumn("Positionen",(Customer c) -> {
-            //this.getItems().remove(c);
-            System.out.println(c);
-            return c;
-        }));
 
         customerObservableList = CustomerQueries.getCustomerList();
-        this.setItems(customerObservableList);
+        addData(customerObservableList);
 
-        this.setEditable(true);
+        getTable().setEditable(true);
 
         addEventToTableColumn(1,firstNameCol);
         addEventToTableColumn(2,lastNameCol);
+
+        addFilterProperty(new Filterable<Customer>() {
+            @Override
+            public String getFilterString(Customer customer) {
+                return customer.getFirstName();
+            }
+        });
+        addFilterProperty(new Filterable<Customer>() {
+            @Override
+            public String getFilterString(Customer customer) {
+                return customer.getLastName();
+            }
+        });
     }
     public void addItem(Customer c){
-        customerObservableList.add(c);
-    }
-    public void updateItems(){
-        customerObservableList = CustomerQueries.getCustomerList();
-        this.setItems(customerObservableList);
+        addData(c);
     }
 
     public void addEventToTableColumn(int columnIndex,TableColumn<Customer,String> tableColumn){
