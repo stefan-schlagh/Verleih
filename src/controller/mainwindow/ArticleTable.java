@@ -5,6 +5,7 @@ import TableFilter.Filterable;
 import controller.dbqueries.ArticleQueries;
 import controller.mainwindow.articlehistory.ArticleHistory;
 import controller.mainwindow.lendarticle.LendArticle;
+import javafx.beans.property.Property;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -12,12 +13,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import model.Article;
+import model.Staff;
 
 import java.io.IOException;
 
 public class ArticleTable extends FilterTable<Article> {
 
-    ObservableList<Article> articleObservableList;
+    private ObservableList<Article> articleObservableList;
+    private Property<Staff> loggedInStaff;
+
+    private LendArticle lendArticleDialog;
 
     public ArticleTable() throws IOException {
         super();
@@ -74,8 +79,8 @@ public class ArticleTable extends FilterTable<Article> {
 
         lendArticle.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("verleihen",(Article a) -> {
 
-            LendArticle dialog = new LendArticle(a);
-            dialog.showAndWait();
+            lendArticleDialog = new LendArticle(a,loggedInStaff);
+            lendArticleDialog.showAndWait();
             return a;
         }));
 
@@ -89,5 +94,13 @@ public class ArticleTable extends FilterTable<Article> {
 
     public void addItem(Article a){
         addData(a);
+    }
+
+    public ObservableList<Article> getArticleObservableList() {
+        return articleObservableList;
+    }
+
+    public void setLoggedInStaff(Property<Staff> loggedInStaff) {
+        this.loggedInStaff = loggedInStaff;
     }
 }

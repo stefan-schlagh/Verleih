@@ -51,7 +51,7 @@ public class Database {
                     ");");
             //lends
             con.createStatement().execute("" +
-                    "CREATE TABLE IF NOT EXISTS lends (" +
+                    "CREATE TABLE IF NOT EXISTS loan (" +
                         "lid INTEGER," +
                         "kid INTEGER," +
                         "aid INTEGER," +

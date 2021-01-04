@@ -4,6 +4,7 @@ import controller.ShowAlert;
 import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.CustomerQueries;
 import controller.dbqueries.ExceptionLog;
+import javafx.beans.property.Property;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -13,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import model.Article;
 import model.Customer;
+import model.Staff;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +39,8 @@ public class MainController implements Initializable {
 
     private ArticleTable articleTable;
     private ShowCustomerTable customerTable;
+
+    private Property<Staff> loggedInStaff;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -109,5 +113,11 @@ public class MainController implements Initializable {
             articleTable.addItem(a);
             ShowAlert.showInformation("erfolgreich gespeichert");
         }
+    }
+
+    public void setLoggedInStaff(Property<Staff> loggedInStaff) {
+        this.loggedInStaff = loggedInStaff;
+        //set loggedInStaff further down
+        articleTable.setLoggedInStaff(loggedInStaff);
     }
 }
