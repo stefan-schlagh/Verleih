@@ -17,14 +17,16 @@ public class CheckBoxTableCell<S> extends TableCell<S,Boolean> {
 
     public CheckBoxTableCell(boolean editable) {
         checkBox = new CheckBox();
-        checkBox.setDisable(true);
-        if(editable)
-            checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if(isEditing())
+        checkBox.setDisable(!editable);
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(editable) {
+                    if (isEditing())
                         commitEdit(newValue == null ? false : newValue);
-                }
-            });
+                }else
+                    checkBox.setSelected(newValue);
+            }
+        });
         this.setGraphic(checkBox);
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         this.setEditable(editable);

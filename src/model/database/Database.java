@@ -15,6 +15,7 @@ public class Database {
         d.init();
 
         Database.addCustomerData();
+        Database.addArticleData();
     }
 
     public static Connection getConnection() throws SQLException{
@@ -53,7 +54,7 @@ public class Database {
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS loan (" +
                         "lid INTEGER," +
-                        "kid INTEGER," +
+                        "cid INTEGER," +
                         "aid INTEGER," +
                         "sid INTEGER," +
                         "startDate TEXT," +
@@ -78,6 +79,9 @@ public class Database {
             }
         }
     }
+    /**
+     * add some customers
+     */
     public static void addCustomerData(){
         Connection con = null;
         Statement st = null;
@@ -90,6 +94,34 @@ public class Database {
                         "('Fritz','Mustermann'), " +
                         "('Hans','Huber'), " +
                         "('Michael','Müller');");
+        } catch (SQLException e) {
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    /**
+     * add some articles
+     */
+    public static void addArticleData(){
+        Connection con = null;
+        Statement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.createStatement();
+            st.executeUpdate("" +
+                    "INSERT INTO article(aName,available) " +
+                    "VALUES " +
+                    "('Buch 1',1), " +
+                    "('Buch 2',1), " +
+                    "('Buch 3',1);");
         } catch (SQLException e) {
             ExceptionLog.write(e);
         } finally {

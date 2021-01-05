@@ -61,7 +61,7 @@ public class ArticleQueries {
             con = Database.getConnection();
             st = con.createStatement();
             ResultSet res = st.executeQuery("" +
-                    "SELECT * " +
+                    "SELECT aid, aName, available " +
                     "FROM article;");
             List<Article> articles = new ArrayList<>();
             // loop over results

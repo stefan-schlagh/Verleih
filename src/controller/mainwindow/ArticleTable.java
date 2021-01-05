@@ -2,6 +2,7 @@ package controller.mainwindow;
 
 import TableFilter.FilterTable;
 import TableFilter.Filterable;
+import controller.ShowAlert;
 import controller.dbqueries.ArticleQueries;
 import controller.mainwindow.articlehistory.ArticleHistory;
 import controller.mainwindow.lendarticle.LendArticle;
@@ -15,6 +16,7 @@ import javafx.util.Callback;
 import model.Article;
 import model.Staff;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class ArticleTable extends FilterTable<Article> {
@@ -66,8 +68,8 @@ public class ArticleTable extends FilterTable<Article> {
                         return new CheckBoxTableCell<Article>(false);
                     }
                 };
-        availableCol.setCellValueFactory(new PropertyValueFactory<Article,Boolean>("available"));
         availableCol.setCellFactory(booleanCellFactory);
+        availableCol.setCellValueFactory(new PropertyValueFactory<Article,Boolean>("available"));
         availableCol.setEditable(false);
 
         showHistory.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("anzeigen",(Article a) -> {
@@ -78,9 +80,13 @@ public class ArticleTable extends FilterTable<Article> {
         }));
 
         lendArticle.setCellFactory(ActionButtonTableCell.<Article>forTableColumn("verleihen",(Article a) -> {
+            // is article available?
+            if(a.isAvailable()) {
+                lendArticleDialog = new LendArticle(a, loggedInStaff);
+                lendArticleDialog.showAndWait();
+            }else
+                ShowAlert.showInformation("Artikel derzeit nicht verfügbar!");
 
-            lendArticleDialog = new LendArticle(a,loggedInStaff);
-            lendArticleDialog.showAndWait();
             return a;
         }));
 

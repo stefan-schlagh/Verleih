@@ -1,6 +1,7 @@
 package controller.mainwindow.lendarticle;
 
 import controller.ShowAlert;
+import controller.dbqueries.LoanQueries;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ public class LendArticleController implements Initializable {
     private Customer customer;
     private Article article;
     private Property<Staff> loggedInStaff;
+    private CompletionCallback<Loan> completionCallback;
 
     @FXML
     private Label labelCustomer;
@@ -52,8 +54,20 @@ public class LendArticleController implements Initializable {
                     startDate.getValue(),
                     endDate.getValue()
             );
-            //TODO: save in DB
-
+            //save loan in DB
+            int lid = LoanQueries.createLoan(
+                    loan.getCustomer().getCid(),
+                    loan.getArticle().getAid(),
+                    loan.getStaff().getSid(),
+                    loan.getStartDate(),
+                    loan.getEndDate()
+            );
+            loan.setLid(lid);
+            //article is set to not available
+            article.setAvailable(false);
+            // call callback
+            if(completionCallback != null)
+                completionCallback.call(loan);
         }
     }
 
@@ -94,5 +108,9 @@ public class LendArticleController implements Initializable {
 
     public void setLoggedInStaff(Property<Staff> loggedInStaff) {
         this.loggedInStaff = loggedInStaff;
+    }
+
+    public void setCompletionCallback(CompletionCallback<Loan> completionCallback) {
+        this.completionCallback = completionCallback;
     }
 }

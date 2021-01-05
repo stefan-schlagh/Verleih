@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Article;
 import model.Customer;
+import model.Loan;
 import model.Staff;
 
 import java.io.IOException;
@@ -49,6 +50,13 @@ public class LendArticle extends Stage {
                                 customer.getFirstName() + " " + customer.getLastName()
                         );
                         lendArticleController.setLabelStaff(loggedInStaff.getValue().getName());
+                        //set callback
+                        lendArticleController.setCompletionCallback(new CompletionCallback<Loan>() {
+                            @Override
+                            public void call(Loan loan) {
+                                hide();
+                            }
+                        });
 
                         rootPane.setCenter(lendArticlePane);
 
