@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Loan {
 
@@ -39,9 +40,10 @@ public class Loan {
      * @param startDate startDate
      * @param endDate endDate, can be changed
      */
-    public Loan(int lid,Customer customer, Article article, Staff staff, LocalDate startDate, LocalDate endDate){
+    public Loan(int lid,Customer customer, Article article, Staff staff, LocalDate startDate, LocalDate endDate,boolean returned){
         this(customer, article, staff, startDate, endDate);
         this.lid = lid;
+        this.returned = returned;
     }
 
     public void setLid(int lid) {
@@ -76,8 +78,16 @@ public class Loan {
         return startDate;
     }
 
+    public String getStartDateString(){
+        return startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public String getEndDateString(){
+        return endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public boolean isReturned() {
