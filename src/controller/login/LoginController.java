@@ -2,6 +2,7 @@ package controller.login;
 
 import controller.ShowAlert;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import model.Staff;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 public class LoginController {
 
     private BooleanProperty loggedIn;
+    private Property<Staff> loggedInStaff;
 
     @FXML
     private VBox login_vBox;
@@ -59,6 +61,7 @@ public class LoginController {
                 int sid = StaffQueries.login(name,password);
 
                 Staff staff = new Staff(sid,name);
+                loggedInStaff.setValue(staff);
 
                 loggedIn.setValue(true);
 
@@ -70,5 +73,9 @@ public class LoginController {
 
     public void setLoggedIn(BooleanProperty loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+    public void setLoggedInStaff(Property<Staff> loggedInStaff) {
+        this.loggedInStaff = loggedInStaff;
     }
 }

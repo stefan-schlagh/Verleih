@@ -1,5 +1,6 @@
 package controller.mainwindow;
 
+import controller.mainwindow.customerarticles.CustomerArticles;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import model.Customer;
@@ -11,12 +12,13 @@ public class ShowCustomerTable extends CustomerTable {
     public ShowCustomerTable() throws IOException {
         super();
 
-        TableColumn<Customer, Button> showActiveCol = new TableColumn<>("Zeige Positionen");
+        TableColumn<Customer, Button> showActiveCol = new TableColumn<>("Zeige verleihte Artikel");
         getTable().getColumns().add(showActiveCol);
 
-        showActiveCol.setCellFactory(ActionButtonTableCell.<Customer>forTableColumn("Positionen",(Customer c) -> {
-            //this.getItems().remove(c);
-            System.out.println(c);
+        showActiveCol.setCellFactory(ActionButtonTableCell.<Customer>forTableColumn("Artikel",(Customer c) -> {
+
+            CustomerArticles dialog = new CustomerArticles(c);
+            dialog.showAndWait();
             return c;
         }));
     }

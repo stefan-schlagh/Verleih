@@ -2,15 +2,19 @@ package controller;
 
 import controller.dbqueries.ExceptionLog;
 import controller.login.LoginController;
+import controller.mainwindow.MainController;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.Staff;
 import model.database.Database;
 
 import java.io.IOException;
@@ -19,6 +23,7 @@ public class Main extends Application {
 
     private BorderPane root;
     private BooleanProperty loggedIn;
+    private Property<Staff> loggedInStaff = new SimpleObjectProperty<>();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -27,7 +32,7 @@ public class Main extends Application {
         d.init();
 
         root = new BorderPane();
-        loggedIn = new SimpleBooleanProperty(true);
+        loggedIn = new SimpleBooleanProperty(false);
 
         loggedIn.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -54,8 +59,12 @@ public class Main extends Application {
     private void updateRootPane(){
         try {
             if (loggedIn.getValue()) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/mainwindow/mainWindow.fxml"));
                 //show main window
-                root.setCenter(FXMLLoader.load(getClass().getResource("../view/mainwindow/mainWindow.fxml")));
+                root.setCenter(loader.load());
+                //get main controller
+                MainController mainController = loader.getController();
+                mainController.setLoggedInStaff(loggedInStaff);
             } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/login/login.fxml"));
                 //show login window
@@ -63,6 +72,7 @@ public class Main extends Application {
                 //get login controller
                 LoginController loginController = loader.getController();
                 loginController.setLoggedIn(loggedIn);
+                loginController.setLoggedInStaff(loggedInStaff);
             }
         }catch (IOException e){
             ExceptionLog.write(e);
