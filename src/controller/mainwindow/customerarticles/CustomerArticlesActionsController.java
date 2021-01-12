@@ -1,6 +1,7 @@
 package controller.mainwindow.customerarticles;
 
 import controller.ShowAlert;
+import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.LoanQueries;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,6 +10,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import model.Article;
 import model.CustomerArticle;
 import model.Loan;
 import java.time.LocalDate;
@@ -27,7 +29,19 @@ public class CustomerArticlesActionsController {
 
     @FXML
     void returnNowClicked(MouseEvent event) {
-        System.out.println("returnNowClicked");
+        // set end date to today
+        loan.setEndDate(LocalDate.now());
+        // set returned to true
+        loan.setReturned(true);
+        //update
+        LoanQueries.updateLoan(loan);
+        customerArticle.update();
+        // update article
+        Article a = loan.getArticle();
+        a.setAvailable(true);
+        ArticleQueries.updateArticle(a);
+        // show prompt
+        ShowAlert.showInformation("Artikel wurde erfolgreich als zurückgegeben eingetragen!");
     }
 
     public void init() {

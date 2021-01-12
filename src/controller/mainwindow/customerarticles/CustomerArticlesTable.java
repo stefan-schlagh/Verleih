@@ -2,6 +2,7 @@ package controller.mainwindow.customerarticles;
 
 import TableFilter.FilterTable;
 import TableFilter.Filterable;
+import controller.ShowAlert;
 import controller.dbqueries.LoanQueries;
 import controller.mainwindow.ActionButtonTableCell;
 import controller.mainwindow.CheckBoxTableCell;
@@ -40,8 +41,14 @@ public class CustomerArticlesTable extends FilterTable<CustomerArticle> {
         endDateCol.setCellValueFactory(new PropertyValueFactory<CustomerArticle,String>("endDateString"));
 
         actionCol.setCellFactory(ActionButtonTableCell.<CustomerArticle>forTableColumn("mehr",(CustomerArticle customerArticle) -> {
-            CustomerArticlesActions dialog = new CustomerArticlesActions(customerArticle);
-            dialog.showAndWait();
+            if(customerArticle.isReturned()) {
+                // no options available --> show prompt
+                ShowAlert.showInformation("keine Optionen verfügbar, da bereits zurückgegeben!");
+            }else {
+                //show dialog
+                CustomerArticlesActions dialog = new CustomerArticlesActions(customerArticle);
+                dialog.showAndWait();
+            }
             return customerArticle;
         }));
 
