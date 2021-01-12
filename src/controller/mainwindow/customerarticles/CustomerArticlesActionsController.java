@@ -1,5 +1,7 @@
 package controller.mainwindow.customerarticles;
 
+import controller.ShowAlert;
+import controller.dbqueries.LoanQueries;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -7,12 +9,14 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import model.CustomerArticle;
 import model.Loan;
 import java.time.LocalDate;
 
 
 public class CustomerArticlesActionsController {
 
+    private CustomerArticle customerArticle;
     private Loan loan;
 
     @FXML
@@ -33,10 +37,12 @@ public class CustomerArticlesActionsController {
         endDatePicker.setValue(loan.getEndDate());
         /*
             set boundaries
-            new date has to be after prev endDate
+            end date has to be at least 1 week in the future,
+            max 6 months in the future
          */
-        LocalDate minDate = loan.getEndDate();
-        LocalDate maxDate = LocalDate.of(minDate.getYear() + 1,minDate.getMonth(),minDate.getDayOfMonth());
+        LocalDate dateNow = LocalDate.now();
+        LocalDate minDate = dateNow.plusDays(7);
+        LocalDate maxDate = dateNow.plusMonths(6);
         endDatePicker.setDayCellFactory(d ->
                 new DateCell() {
                     @Override public void updateItem(LocalDate item, boolean empty) {
@@ -46,10 +52,23 @@ public class CustomerArticlesActionsController {
         //listen when value of datePicker is changed
         endDatePicker.valueProperty().addListener(new ChangeListener<LocalDate>() {
             @Override
-            public void changed(ObservableValue<? extends LocalDate> observableValue, LocalDate date, LocalDate t1) {
-                System.out.println("endDatePickerChanged");
+            public void changed(ObservableValue<? extends LocalDate> observableValue, LocalDate oldDate, LocalDate newDate) {
+                // set end date and update loan
+                loan.setEndDate(newDate);
+                LoanQueries.updateLoan(loan);
+                customerArticle.update();
+                // show prompt
+                ShowAlert.showInformation("Rückgabedatum wurde geändert");
             }
         });
+    }
+
+    public CustomerArticle getCustomerArticle() {
+        return customerArticle;
+    }
+
+    public void setCustomerArticle(CustomerArticle customerArticle) {
+        this.customerArticle = customerArticle;
     }
 
     public Loan getLoan() {

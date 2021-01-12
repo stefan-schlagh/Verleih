@@ -7,13 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.Loan;
+import model.CustomerArticle;
 
 import java.io.IOException;
 
 public class CustomerArticlesActions extends Stage {
 
-    public CustomerArticlesActions(Loan loan){
+    public CustomerArticlesActions(CustomerArticle customerArticle){
 
         super();
 
@@ -33,7 +33,8 @@ public class CustomerArticlesActions extends Stage {
 
             CustomerArticlesActionsController actionsController = fxmlLoader.getController();
 
-            actionsController.setLoan(loan);
+            actionsController.setLoan(customerArticle.getLoan());
+            actionsController.setCustomerArticle(customerArticle);
             actionsController.init();
 
             rootPane.setCenter(cAAPane);

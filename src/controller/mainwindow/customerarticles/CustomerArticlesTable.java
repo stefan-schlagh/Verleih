@@ -40,7 +40,7 @@ public class CustomerArticlesTable extends FilterTable<CustomerArticle> {
         endDateCol.setCellValueFactory(new PropertyValueFactory<CustomerArticle,String>("endDateString"));
 
         actionCol.setCellFactory(ActionButtonTableCell.<CustomerArticle>forTableColumn("mehr",(CustomerArticle customerArticle) -> {
-            CustomerArticlesActions dialog = new CustomerArticlesActions(customerArticle.getLoan());
+            CustomerArticlesActions dialog = new CustomerArticlesActions(customerArticle);
             dialog.showAndWait();
             return customerArticle;
         }));

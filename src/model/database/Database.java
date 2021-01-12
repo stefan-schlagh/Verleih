@@ -53,7 +53,7 @@ public class Database {
             //lends
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS loan (" +
-                        "lid INTEGER," +
+                        "lid INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "cid INTEGER," +
                         "aid INTEGER," +
                         "sid INTEGER," +

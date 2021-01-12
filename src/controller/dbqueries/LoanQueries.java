@@ -7,9 +7,7 @@ import model.Staff;
 import model.database.Database;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,5 +167,39 @@ public class LoanQueries {
             loanList.add(loan);
         }
         return loanList;
+    }
+    /**
+     * Loan gets updated. only the fields endDate and returned can be updated
+     * @param loan an instance of Loan
+     */
+    public static void updateLoan(Loan loan){
+        Connection con = null;
+        PreparedStatement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.prepareStatement("" +
+                    "UPDATE loan " +
+                    "SET " +
+                        "endDate = ?, " +
+                        "returned = ? " +
+                    "WHERE lid = ?;");
+            st.setString(1,localDateToString(loan.getEndDate()));
+            st.setInt(2,loan.isReturned() ? 1 : 0);
+            st.setInt(3,loan.getLid());
+
+            st.executeUpdate();
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+
     }
 }
