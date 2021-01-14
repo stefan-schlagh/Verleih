@@ -109,4 +109,12 @@ public class ArticleTable extends FilterTable<Article> {
     public void setLoggedInStaff(Property<Staff> loggedInStaff) {
         this.loggedInStaff = loggedInStaff;
     }
+    /**
+     * update data of articleTable
+     */
+    public void updateData(){
+        removeAllData();
+        articleObservableList = ArticleQueries.getArticleList();
+        addData(articleObservableList);
+    }
 }

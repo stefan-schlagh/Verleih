@@ -5,6 +5,7 @@ import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.CustomerQueries;
 import controller.dbqueries.ExceptionLog;
 import javafx.beans.property.Property;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -37,7 +38,7 @@ public class MainController implements Initializable {
     @FXML
     private TextField addCustomerLastName;
 
-    private ArticleTable articleTable;
+    private ArticleTable articleTable = null;
     private ShowCustomerTable customerTable;
 
     private Property<Staff> loggedInStaff;
@@ -119,5 +120,14 @@ public class MainController implements Initializable {
         this.loggedInStaff = loggedInStaff;
         //set loggedInStaff further down
         articleTable.setLoggedInStaff(loggedInStaff);
+    }
+
+    @FXML
+    void articleTabSelected(Event event) {
+        /*
+            update articleTable, when tab selected
+         */
+        if(articleTable != null)
+            articleTable.updateData();
     }
 }
