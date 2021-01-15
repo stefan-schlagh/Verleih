@@ -3,6 +3,7 @@ package controller.mainwindow.customerarticles;
 import TableFilter.FilterTable;
 import TableFilter.Filterable;
 import controller.ShowAlert;
+import controller.StageUtilities;
 import controller.dbqueries.LoanQueries;
 import controller.mainwindow.ActionButtonTableCell;
 import controller.mainwindow.CheckBoxTableCell;
@@ -44,6 +45,8 @@ public class CustomerArticlesTable extends FilterTable<CustomerArticle> {
             if(customerArticle.isReturned()) {
                 // no options available --> show prompt
                 ShowAlert.showInformation("keine Optionen verfügbar, da bereits zurückgegeben!");
+                // close Stage
+                StageUtilities.closeStage(this);
             }else {
                 //show dialog
                 CustomerArticlesActions dialog = new CustomerArticlesActions(customerArticle);

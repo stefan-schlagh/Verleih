@@ -1,6 +1,7 @@
 package controller.mainwindow.customerarticles;
 
 import controller.ShowAlert;
+import controller.StageUtilities;
 import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.LoanQueries;
 import javafx.beans.value.ChangeListener;
@@ -42,6 +43,8 @@ public class CustomerArticlesActionsController {
         ArticleQueries.updateArticle(a);
         // show prompt
         ShowAlert.showInformation("Artikel wurde erfolgreich als zurückgegeben eingetragen!");
+        // close Stage
+        StageUtilities.closeStage(event);
     }
 
     public void init() {
@@ -73,6 +76,8 @@ public class CustomerArticlesActionsController {
                 customerArticle.update();
                 // show prompt
                 ShowAlert.showInformation("Rückgabedatum wurde geändert");
+                // close Stage
+                StageUtilities.closeStage(endDatePicker);
             }
         });
     }
