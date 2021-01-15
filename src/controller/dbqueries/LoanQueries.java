@@ -13,6 +13,25 @@ import java.util.List;
 
 public class LoanQueries {
     /**
+     * Select all Loans using Inner Joins.
+     * a where statement has to be added
+     * getLoanList takes a ResultSet of this query
+     */
+    private static final String SELECT_LOANS =
+            "SELECT " +
+                "l.lid, " +
+                "c.cid, c.firstName, c.lastName, " +
+                "a.aid, a.aName, a.available, " +
+                "s.sid, s.sName, " +
+                "l.startDate, l.endDate, l.returned " +
+            "FROM loan l " +
+            "INNER JOIN customer c " +
+                "ON l.cid = c.cid " +
+            "INNER JOIN article a " +
+                "ON l.aid = a.aid " +
+            "INNER JOIN staff s " +
+                "ON l.sid = s.sid ";
+    /**
      * create a new loan
      * @param cid id of the customer
      * @param aid id of the article
@@ -86,19 +105,7 @@ public class LoanQueries {
         try{
             con = Database.getConnection();
             st1 = con.prepareStatement("" +
-                    "SELECT " +
-                        "l.lid, " +
-                        "c.cid, c.firstName, c.lastName, " +
-                        "a.aid, a.aName, a.available, " +
-                        "s.sid, s.sName, " +
-                        "l.startDate, l.endDate, l.returned " +
-                    "FROM loan l " +
-                    "INNER JOIN customer c " +
-                        "ON l.cid = c.cid " +
-                    "INNER JOIN article a " +
-                        "ON l.aid = a.aid " +
-                    "INNER JOIN staff s " +
-                        "ON l.sid = s.sid " +
+                    SELECT_LOANS +
                     "WHERE l.cid = ?;");
             st1.setInt(1,cid);
             ResultSet res = st1.executeQuery();
@@ -119,7 +126,45 @@ public class LoanQueries {
             }
         }
     }
+    /**
+     * get all loans of a article
+     * @param aid the id of the article
+     * @return a List of all Loans
+     */
+    public static List<Loan> getArticleLoans(int aid){
+        Connection con = null;
+        PreparedStatement st1 = null;
+        try{
+            con = Database.getConnection();
+            st1 = con.prepareStatement("" +
+                    SELECT_LOANS +
+                    "WHERE a.aid = ?;");
+            st1.setInt(1,aid);
+            ResultSet res = st1.executeQuery();
 
+            return getLoanList(res);
+
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+            return new ArrayList<>();
+        } finally {
+            try {
+                if(st1 != null)
+                    st1.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    /**
+     * convert a ResultSet into a usable list.
+     * use the query provided in SELECT_LOANS
+     * @param res the ResultSet
+     * @return a list with all loans contained in the resultSet
+     * @throws SQLException SQLException
+     */
     private static List<Loan> getLoanList(ResultSet res) throws SQLException{
 
         List<Loan> loanList = new ArrayList<>();

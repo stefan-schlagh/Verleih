@@ -1,9 +1,9 @@
 package controller.mainwindow.articlehistory;
 
 import controller.dbqueries.ExceptionLog;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Article;
 
@@ -14,14 +14,21 @@ public class ArticleHistory extends Stage {
     public ArticleHistory(Article a){
         super();
 
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../../../view/mainwindow/articleHistory.fxml"));
+        setTitle("Artikelverlauf");
 
-            Scene scene = new Scene(root);
-            setTitle("Artikelverlauf");
-            this.setScene(scene);
-        }catch(IOException e){
+        BorderPane rootPane = new BorderPane();
+        Scene scene = new Scene(rootPane,500,400);
+        setScene(scene);
+
+        try {
+
+            ArticleHistoryTable articleHistoryTable = new ArticleHistoryTable(a);
+            rootPane.setCenter(articleHistoryTable);
+
+        } catch(IOException e){
             ExceptionLog.write(e);
+
+            rootPane.setCenter(new Label("could not load table"));
         }
     }
 }

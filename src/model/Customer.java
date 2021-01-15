@@ -50,6 +50,10 @@ public class Customer {
         return lastName.get();
     }
 
+    public String getName(){
+        return firstName.get() + " " + lastName.get();
+    }
+
     public StringProperty lastNameProperty() {
         return lastName;
     }

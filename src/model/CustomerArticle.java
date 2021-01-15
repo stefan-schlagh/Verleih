@@ -105,8 +105,8 @@ public class CustomerArticle {
 
         List<CustomerArticle> customerArticles = new ArrayList<>();
 
-        for(int i = 0;i < loans.size();i++){
-            customerArticles.add(new CustomerArticle(loans.get(i)));
+        for (Loan value : loans) {
+            customerArticles.add(new CustomerArticle(value));
         }
         return customerArticles;
     }
