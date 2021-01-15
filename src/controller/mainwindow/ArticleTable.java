@@ -27,7 +27,7 @@ public class ArticleTable extends FilterTable<Article> {
     private LendArticle lendArticleDialog;
 
     public ArticleTable() throws IOException {
-        super();
+        super("Suchen:");
 
         TableColumn<Article, Integer> idCol = new TableColumn<>("Artikelnummer");
         TableColumn<Article, String> nameCol = new TableColumn<>("Artikelname");

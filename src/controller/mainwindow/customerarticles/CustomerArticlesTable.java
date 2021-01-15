@@ -20,7 +20,7 @@ import java.util.List;
 public class CustomerArticlesTable extends FilterTable<CustomerArticle> {
 
     public CustomerArticlesTable(Customer customer) throws IOException {
-        super();
+        super("Suchen:");
 
         TableColumn<CustomerArticle,String> articleCol = new TableColumn<>("Artikel");
         TableColumn<CustomerArticle,String> staffCol = new TableColumn<>("angelegt von");

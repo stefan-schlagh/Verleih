@@ -18,7 +18,7 @@ public class CustomerTable extends FilterTable<Customer> {
     private ObservableList<Customer> customerObservableList;
 
     public CustomerTable() throws IOException {
-        super();
+        super("Suchen:");
 
         TableColumn<Customer, String> firstNameCol = new TableColumn<>("Vorname");
         TableColumn<Customer, String> lastNameCol = new TableColumn<>("Nachname");
