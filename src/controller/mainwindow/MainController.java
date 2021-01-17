@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import model.Article;
 import model.Customer;
 import model.Staff;
+import model.database.Database;
 
 import java.io.IOException;
 import java.net.URL;
@@ -129,5 +130,24 @@ public class MainController implements Initializable {
          */
         if(articleTable != null)
             articleTable.updateData();
+    }
+    /*
+        delete database, initialize empty one
+     */
+    @FXML
+    void deleteData(MouseEvent event) {
+        // delete database
+        Database.delete();
+        // initialize new database
+        Database.init();
+
+        ShowAlert.showInformation("Alle Daten gelöscht!");
+    }
+    @FXML
+    void addData(MouseEvent event) {
+        // add standard data to DB
+        Database.addData();
+
+        ShowAlert.showInformation("Daten hinzugefügt!");
     }
 }
