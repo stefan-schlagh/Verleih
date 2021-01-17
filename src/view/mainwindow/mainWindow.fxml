@@ -12,7 +12,7 @@
 
 <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@customer.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainwindow.MainController">
   <tabs>
-    <Tab text="Artikel">
+    <Tab onSelectionChanged="#articleTabSelected" text="Artikel">
          <content>
             <BorderPane fx:id="articlePane" prefHeight="200.0" prefWidth="200.0">
                 <bottom>
@@ -39,7 +39,7 @@
             </BorderPane>
          </content>
     </Tab>
-    <Tab text="Kunden">
+    <Tab onSelectionChanged="#customerTabSelected" text="Kunden">
          <content>
             <BorderPane fx:id="customerPane" prefHeight="200.0" prefWidth="200.0">
                <bottom>
@@ -73,6 +73,16 @@
       <Tab text="Profil">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
+      <Tab text="Datenbank">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="45.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#deleteData" text="alle Daten löschen" />
+                  <Button layoutX="45.0" layoutY="52.0" mnemonicParsing="false" onMouseClicked="#addData" text="Standarddaten hinzufügen" />
+               </children>
+            </AnchorPane>
         </content>
       </Tab>
   </tabs>

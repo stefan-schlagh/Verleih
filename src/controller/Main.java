@@ -28,8 +28,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Database d = new Database();
-        d.init();
+        Database.init();
 
         root = new BorderPane();
         loggedIn = new SimpleBooleanProperty(false);

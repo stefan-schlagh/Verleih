@@ -7,13 +7,30 @@ import model.Staff;
 import model.database.Database;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoanQueries {
+    /**
+     * Select all Loans using Inner Joins.
+     * a where statement has to be added
+     * getLoanList takes a ResultSet of this query
+     */
+    private static final String SELECT_LOANS =
+            "SELECT " +
+                "l.lid, " +
+                "c.cid, c.firstName, c.lastName, " +
+                "a.aid, a.aName, a.available, " +
+                "s.sid, s.sName, " +
+                "l.startDate, l.endDate, l.returned " +
+            "FROM loan l " +
+            "INNER JOIN customer c " +
+                "ON l.cid = c.cid " +
+            "INNER JOIN article a " +
+                "ON l.aid = a.aid " +
+            "INNER JOIN staff s " +
+                "ON l.sid = s.sid ";
     /**
      * create a new loan
      * @param cid id of the customer
@@ -88,19 +105,7 @@ public class LoanQueries {
         try{
             con = Database.getConnection();
             st1 = con.prepareStatement("" +
-                    "SELECT " +
-                        "l.lid, " +
-                        "c.cid, c.firstName, c.lastName, " +
-                        "a.aid, a.aName, a.available, " +
-                        "s.sid, s.sName, " +
-                        "l.startDate, l.endDate, l.returned " +
-                    "FROM loan l " +
-                    "INNER JOIN customer c " +
-                        "ON l.cid = c.cid " +
-                    "INNER JOIN article a " +
-                        "ON l.aid = a.aid " +
-                    "INNER JOIN staff s " +
-                        "ON l.sid = s.sid " +
+                    SELECT_LOANS +
                     "WHERE l.cid = ?;");
             st1.setInt(1,cid);
             ResultSet res = st1.executeQuery();
@@ -121,7 +126,45 @@ public class LoanQueries {
             }
         }
     }
+    /**
+     * get all loans of a article
+     * @param aid the id of the article
+     * @return a List of all Loans
+     */
+    public static List<Loan> getArticleLoans(int aid){
+        Connection con = null;
+        PreparedStatement st1 = null;
+        try{
+            con = Database.getConnection();
+            st1 = con.prepareStatement("" +
+                    SELECT_LOANS +
+                    "WHERE a.aid = ?;");
+            st1.setInt(1,aid);
+            ResultSet res = st1.executeQuery();
 
+            return getLoanList(res);
+
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+            return new ArrayList<>();
+        } finally {
+            try {
+                if(st1 != null)
+                    st1.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    /**
+     * convert a ResultSet into a usable list.
+     * use the query provided in SELECT_LOANS
+     * @param res the ResultSet
+     * @return a list with all loans contained in the resultSet
+     * @throws SQLException SQLException
+     */
     private static List<Loan> getLoanList(ResultSet res) throws SQLException{
 
         List<Loan> loanList = new ArrayList<>();
@@ -169,5 +212,39 @@ public class LoanQueries {
             loanList.add(loan);
         }
         return loanList;
+    }
+    /**
+     * Loan gets updated. only the fields endDate and returned can be updated
+     * @param loan an instance of Loan
+     */
+    public static void updateLoan(Loan loan){
+        Connection con = null;
+        PreparedStatement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.prepareStatement("" +
+                    "UPDATE loan " +
+                    "SET " +
+                        "endDate = ?, " +
+                        "returned = ? " +
+                    "WHERE lid = ?;");
+            st.setString(1,localDateToString(loan.getEndDate()));
+            st.setInt(2,loan.isReturned() ? 1 : 0);
+            st.setInt(3,loan.getLid());
+
+            st.executeUpdate();
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+
     }
 }

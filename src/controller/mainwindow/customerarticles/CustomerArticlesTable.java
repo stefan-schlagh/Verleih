@@ -2,6 +2,8 @@ package controller.mainwindow.customerarticles;
 
 import TableFilter.FilterTable;
 import TableFilter.Filterable;
+import controller.ShowAlert;
+import controller.StageUtilities;
 import controller.dbqueries.LoanQueries;
 import controller.mainwindow.ActionButtonTableCell;
 import controller.mainwindow.CheckBoxTableCell;
@@ -19,7 +21,7 @@ import java.util.List;
 public class CustomerArticlesTable extends FilterTable<CustomerArticle> {
 
     public CustomerArticlesTable(Customer customer) throws IOException {
-        super();
+        super("Suchen:");
 
         TableColumn<CustomerArticle,String> articleCol = new TableColumn<>("Artikel");
         TableColumn<CustomerArticle,String> staffCol = new TableColumn<>("angelegt von");
@@ -40,9 +42,16 @@ public class CustomerArticlesTable extends FilterTable<CustomerArticle> {
         endDateCol.setCellValueFactory(new PropertyValueFactory<CustomerArticle,String>("endDateString"));
 
         actionCol.setCellFactory(ActionButtonTableCell.<CustomerArticle>forTableColumn("mehr",(CustomerArticle customerArticle) -> {
-            customerArticle.getLoan();
-            //TODO
-            System.out.println("mehr");
+            if(customerArticle.isReturned()) {
+                // no options available --> show prompt
+                ShowAlert.showInformation("keine Optionen verfügbar, da bereits zurückgegeben!");
+                // close Stage
+                StageUtilities.closeStage(this);
+            }else {
+                //show dialog
+                CustomerArticlesActions dialog = new CustomerArticlesActions(customerArticle);
+                dialog.showAndWait();
+            }
             return customerArticle;
         }));
 

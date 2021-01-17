@@ -25,6 +25,14 @@ public class CustomerArticle {
         setReturned(loan.isReturned());
     }
 
+    public void update(){
+        setArticleName(loan.getArticle().getName());
+        setStaffName(loan.getStaff().getName());
+        setStartDateString(loan.getStartDateString());
+        setEndDateString(loan.getEndDateString());
+        setReturned(loan.isReturned());
+    }
+
     public Loan getLoan() {
         return loan;
     }
@@ -97,8 +105,8 @@ public class CustomerArticle {
 
         List<CustomerArticle> customerArticles = new ArrayList<>();
 
-        for(int i = 0;i < loans.size();i++){
-            customerArticles.add(new CustomerArticle(loans.get(i)));
+        for (Loan value : loans) {
+            customerArticles.add(new CustomerArticle(value));
         }
         return customerArticles;
     }

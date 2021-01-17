@@ -27,7 +27,7 @@ public class ArticleTable extends FilterTable<Article> {
     private LendArticle lendArticleDialog;
 
     public ArticleTable() throws IOException {
-        super();
+        super("Suchen:");
 
         TableColumn<Article, Integer> idCol = new TableColumn<>("Artikelnummer");
         TableColumn<Article, String> nameCol = new TableColumn<>("Artikelname");
@@ -108,5 +108,13 @@ public class ArticleTable extends FilterTable<Article> {
 
     public void setLoggedInStaff(Property<Staff> loggedInStaff) {
         this.loggedInStaff = loggedInStaff;
+    }
+    /**
+     * update data of articleTable
+     */
+    public void updateData(){
+        removeAllData();
+        articleObservableList = ArticleQueries.getArticleList();
+        addData(articleObservableList);
     }
 }

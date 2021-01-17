@@ -3,6 +3,8 @@ package model.database;
 import controller.dbqueries.ExceptionLog;
 import controller.dbqueries.StaffQueries;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,17 +13,21 @@ import java.sql.Statement;
 public class Database {
 
     public static void main(String[] args) {
-        Database d = new Database();
-        d.init();
-
-        Database.addCustomerData();
-        Database.addArticleData();
+        init();
+        addData();
     }
-
+    /**
+     * get a connection to the database
+     * @return a connection to the database
+     * @throws SQLException database not found
+     */
     public static Connection getConnection() throws SQLException{
         return DriverManager.getConnection("jdbc:sqlite:Verleih.db");
     }
-    public void init(){
+    /**
+     * initialize the database
+     */
+    public static void init(){
         Connection con = null;
         try{
             // create connection
@@ -53,7 +59,7 @@ public class Database {
             //lends
             con.createStatement().execute("" +
                     "CREATE TABLE IF NOT EXISTS loan (" +
-                        "lid INTEGER," +
+                        "lid INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "cid INTEGER," +
                         "aid INTEGER," +
                         "sid INTEGER," +
@@ -78,6 +84,13 @@ public class Database {
                 ExceptionLog.write(e);
             }
         }
+    }
+    /**
+     * add data
+     */
+    public static void addData(){
+        addCustomerData();
+        addArticleData();
     }
     /**
      * add some customers
@@ -133,6 +146,21 @@ public class Database {
             } catch (SQLException e) {
                 ExceptionLog.write(e);
             }
+        }
+    }
+    /**
+     * delete Database
+     */
+    public static void delete(){
+
+        try {
+            File f = new File("Verleih.db");
+            //if file exists --> delete
+            if (f.exists())
+                if(!f.delete())
+                    throw new IOException("Verleih.db could not be deleted!");
+        } catch (IOException e){
+            ExceptionLog.write(e);
         }
     }
 }
