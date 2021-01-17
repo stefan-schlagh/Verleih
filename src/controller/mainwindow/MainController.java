@@ -131,6 +131,15 @@ public class MainController implements Initializable {
         if(articleTable != null)
             articleTable.updateData();
     }
+
+    @FXML
+    void customerTabSelected(Event event) {
+        /*
+            update customer, when tab selected
+         */
+        if(customerTable != null)
+            customerTable.updateData();
+    }
     /*
         delete database, initialize empty one
      */

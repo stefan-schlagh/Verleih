@@ -39,7 +39,7 @@
             </BorderPane>
          </content>
     </Tab>
-    <Tab text="Kunden">
+    <Tab onSelectionChanged="#customerTabSelected" text="Kunden">
          <content>
             <BorderPane fx:id="customerPane" prefHeight="200.0" prefWidth="200.0">
                <bottom>
