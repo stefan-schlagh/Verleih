@@ -16,11 +16,11 @@
             <Separator opacity="0.0" prefWidth="200.0" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
             <Label id="login-header" text="Login" />
-            <Label styleClass="login-label" text="name" />
+            <Label styleClass="login-label" text="Name" />
             <TextField fx:id="loginName" onKeyPressed="#nameKeyPressed" styleClass="login-text" />
-            <Label styleClass="login-label" text="password" />
+            <Label styleClass="login-label" text="Passwort" />
             <PasswordField fx:id="loginPassword" onKeyPressed="#passwordKeyPressed" styleClass="login-text" />
-            <Button id="btn-submit" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#onSubmitClick" text="Submit" />
+            <Button id="btn-submit" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#onSubmitClick" text="Login" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
          </children>
       </VBox>
