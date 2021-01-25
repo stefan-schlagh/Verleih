@@ -14,6 +14,14 @@
 .login-text {
     -fx-padding: 5px;
 }
+.errorMsg {
+    -fx-padding: 3px;
+    -fx-text-fill: white;
+    -fx-background-color: #ff5555;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-border-radius: 2px;
+}
 #btn-submit {
     -fx-start-margin: 5px;
     -fx-padding: 5px;
