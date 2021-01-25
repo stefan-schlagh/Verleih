@@ -1,3 +1,6 @@
+#login-rootPane {
+    -fx-background-color: white;
+}
 #login-header {
     -fx-font-size: 25px;
     -fx-alignment: center;
@@ -13,4 +16,13 @@
 }
 #btn-submit {
     -fx-start-margin: 5px;
+    -fx-padding: 5px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #3385ff;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+#btn-submit:hover {
+    -fx-background-color: #1a75ff;
 }
