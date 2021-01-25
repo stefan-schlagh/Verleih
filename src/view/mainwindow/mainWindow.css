@@ -1,0 +1,39 @@
+#tabPane {
+    -fx-background-color: white;
+}
+#tabPane>*.tab-header-area>*.tab-header-background
+{
+    -fx-background-color: -fx-outer-border, -fx-text-box-border, #f4f4f4;
+}
+.btn1-small {
+    -fx-text-fill: white;
+    -fx-background-color: #3385ff;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.btn1-small:hover {
+    -fx-background-color: #1a75ff;
+}
+.btn2-small,
+.table-view .button {
+    -fx-border-color: #1a75ff;
+    -fx-background-color: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 3px;
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.btn2-small:hover,
+.table-view .button:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #66a3ff;
+}
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color: #66a3ff;
+}
+.table-view .column-header .label {
+    -fx-text-fill: white;
+}

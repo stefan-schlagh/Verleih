@@ -26,6 +26,7 @@ public class LendArticle extends Stage {
         Scene scene = new Scene(rootPane);
 
         scene.getStylesheets().add(getClass().getResource("../../../view/mainwindow/lendArticle.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../../../view/mainwindow/mainWindow.css").toExternalForm());
 
         setScene(scene);
 
