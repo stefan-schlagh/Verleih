@@ -8,6 +8,7 @@ import javafx.beans.property.Property;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -145,18 +146,22 @@ public class MainController implements Initializable {
      */
     @FXML
     void deleteData(MouseEvent event) {
-        // delete database
-        Database.delete();
-        // initialize new database
-        Database.init();
+        // ask if they really want to do it
+        if(ShowAlert.showConfirmation("Wirklich alles löschen?") == ButtonType.YES) {
+            // delete database
+            Database.delete();
+            // initialize new database
+            Database.init();
 
-        ShowAlert.showInformation("Alle Daten gelöscht!");
+            ShowAlert.showInformation("Alle Daten gelöscht!");
+        }
     }
     @FXML
     void addData(MouseEvent event) {
-        // add standard data to DB
-        Database.addData();
-
-        ShowAlert.showInformation("Daten hinzugefügt!");
+        if (ShowAlert.showConfirmation("Daten hinzufügen?") == ButtonType.YES) {
+            // add standard data to DB
+            Database.addData();
+            ShowAlert.showInformation("Daten hinzugefügt!");
+        }
     }
 }
