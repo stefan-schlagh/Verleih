@@ -34,6 +34,9 @@
 .tab:hover, .tab:selected {
     -fx-background-color: #0066ff;
 }
+.combo-box {
+    -fx-cursor: hand;
+}
 .tab .tab-label {
     -fx-alignment: CENTER;
     -fx-text-fill: white;

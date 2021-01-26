@@ -7,8 +7,11 @@ import controller.dbqueries.ArticleQueries;
 import controller.mainwindow.articlehistory.ArticleHistory;
 import controller.mainwindow.lendarticle.LendArticle;
 import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -21,10 +24,14 @@ import java.io.IOException;
 
 public class ArticleTable extends FilterTable<Article> {
 
+    public static final int FILTER_ALL = 0;
+    public static final int FILTER_AVAILABLE = 1;
+    public static final int FILTER_NOT_AVAILABLE = 2;
+
     private ObservableList<Article> articleObservableList;
     private Property<Staff> loggedInStaff;
-
     private LendArticle lendArticleDialog;
+    private int selectedFilter = FILTER_ALL;
 
     public ArticleTable() throws IOException {
         super("Suchen:");
@@ -40,7 +47,7 @@ public class ArticleTable extends FilterTable<Article> {
         idCol.setCellValueFactory(new PropertyValueFactory<>("aid"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        articleObservableList = ArticleQueries.getArticleList();
+        articleObservableList = ArticleQueries.getArticleList(selectedFilter);
         addData(articleObservableList);
 
         getTable().setEditable(true);
@@ -96,6 +103,24 @@ public class ArticleTable extends FilterTable<Article> {
                 return article.getName();
             }
         });
+        /*
+            filter comboBox
+         */
+        ComboBox<String> filterComboBox = new ComboBox<>();
+        filterComboBox.getItems().addAll(
+                "alle",
+                "verfügbar",
+                "verliehen"
+        );
+        filterComboBox.getSelectionModel().select(0);
+        filterComboBox.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                selectedFilter = filterComboBox.getSelectionModel().getSelectedIndex();
+                updateData();
+            }
+        });
+        getSearchBoxChildren().add(filterComboBox);
     }
 
     public void addItem(Article a){
@@ -114,7 +139,7 @@ public class ArticleTable extends FilterTable<Article> {
      */
     public void updateData(){
         removeAllData();
-        articleObservableList = ArticleQueries.getArticleList();
+        articleObservableList = ArticleQueries.getArticleList(selectedFilter);
         addData(articleObservableList);
     }
 }

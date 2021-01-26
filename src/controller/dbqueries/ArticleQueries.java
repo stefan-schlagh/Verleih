@@ -1,5 +1,6 @@
 package controller.dbqueries;
 
+import controller.mainwindow.ArticleTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Article;
@@ -54,15 +55,23 @@ public class ArticleQueries {
      * creates a list of all articles
      * @return a list of all articles
      */
-    public static ObservableList<Article> getArticleList(){
+    public static ObservableList<Article> getArticleList(int filter){
         Connection con = null;
         Statement st = null;
         try{
             con = Database.getConnection();
             st = con.createStatement();
-            ResultSet res = st.executeQuery("" +
-                    "SELECT aid, aName, available " +
-                    "FROM article;");
+            // create sql query
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT aid, aName, available " +
+                    "FROM article");
+            if(filter == ArticleTable.FILTER_AVAILABLE)
+                query.append(" WHERE available = 1");
+            if(filter == ArticleTable.FILTER_NOT_AVAILABLE)
+                query.append(" WHERE available = 0");
+            query.append(";");
+            // get resultSet
+            ResultSet res = st.executeQuery(query.toString());
             List<Article> articles = new ArrayList<>();
             // loop over results
             while(res.next()){

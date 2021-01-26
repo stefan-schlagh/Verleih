@@ -12,7 +12,7 @@ public class ShowCustomerTable extends CustomerTable {
     public ShowCustomerTable() throws IOException {
         super();
 
-        TableColumn<Customer, Button> showActiveCol = new TableColumn<>("Zeige verleihte Artikel");
+        TableColumn<Customer, Button> showActiveCol = new TableColumn<>("Zeige verliehene Artikel");
         getTable().getColumns().add(showActiveCol);
 
         showActiveCol.setCellFactory(ActionButtonTableCell.<Customer>forTableColumn("Artikel",(Customer c) -> {
