@@ -14,6 +14,10 @@ public class CustomerArticles extends Stage {
     public CustomerArticles(Customer customer){
         super();
 
+        /*
+            TODO:   show articles that are overdue
+                    filter returned/ not returned articles
+         */
         setTitle("Artikel anzeigen");
 
         BorderPane rootPane = new BorderPane();

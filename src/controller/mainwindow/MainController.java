@@ -4,10 +4,14 @@ import controller.ShowAlert;
 import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.CustomerQueries;
 import controller.dbqueries.ExceptionLog;
+import controller.dbqueries.LoanQueries;
 import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -43,12 +47,26 @@ public class MainController implements Initializable {
     private ArticleTable articleTable = null;
     private ShowCustomerTable customerTable;
 
+    @FXML
+    private Button deleteArticle;
+
+    @FXML
+    private Button deleteCustomer;
+
     private Property<Staff> loggedInStaff;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             customerTable = new ShowCustomerTable();
+            customerTable.getCustomerProperty().addListener(new ChangeListener<Customer>() {
+                @Override
+                public void changed(ObservableValue<? extends Customer> observableValue, Customer oldValue, Customer newValue) {
+                    deleteCustomer.setVisible(newValue != null);
+                }
+            });
+            //set visibility of deleteCustomer to false after init
+            deleteCustomer.setVisible(false);
             customerPane.setCenter(customerTable);
 
             articleTable = new ArticleTable();
@@ -94,6 +112,21 @@ public class MainController implements Initializable {
         }
     }
 
+    public void deleteCustomerMouseClicked(MouseEvent event){
+
+        Customer selectedCustomer = customerTable.getSelectedCustomer();
+        if(LoanQueries.getActiveCustomerLoans(selectedCustomer.getCid()).size() > 0)
+            ShowAlert.showInformation("Der Kunde hat noch nicht alle Artikel zurückgegeben!");
+        else
+            if(ShowAlert.showConfirmation(
+                    "Kunde " + selectedCustomer.getNameString() + " wirklich löschen?"
+                ) == ButtonType.YES) {
+
+                CustomerQueries.deleteCustomer(selectedCustomer);
+                customerTable.updateData();
+            }
+    }
+
     @FXML
     void addArticleNameKeyPressed(KeyEvent event) {
         if(event.getCode() == KeyCode.ENTER)
@@ -117,6 +150,8 @@ public class MainController implements Initializable {
             ShowAlert.showInformation("erfolgreich gespeichert");
         }
     }
+
+    public void deleteArticleMouseClicked(MouseEvent event){}
 
     public void setLoggedInStaff(Property<Staff> loggedInStaff) {
         this.loggedInStaff = loggedInStaff;

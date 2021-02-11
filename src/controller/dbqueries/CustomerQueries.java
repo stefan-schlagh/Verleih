@@ -3,6 +3,7 @@ package controller.dbqueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import model.Loan;
 import model.database.Database;
 
 import java.sql.*;
@@ -56,15 +57,24 @@ public class CustomerQueries {
      * creates a list of all customers
      * @return a list of all customers
      */
-    public static ObservableList<Customer> getCustomerList(){
+    public static ObservableList<Customer> getCustomerList(boolean onlyActive){
         Connection con = null;
         Statement st = null;
         try{
             con = Database.getConnection();
             st = con.createStatement();
-            ResultSet res = st.executeQuery("" +
+            String query;
+
+            if(onlyActive)
+                query =
                     "SELECT * " +
-                    "FROM customer;");
+                    "FROM customer " +
+                    "WHERE active = 1;";
+            else
+                query =
+                    "SELECT * " +
+                    "FROM customer;";
+            ResultSet res = st.executeQuery(query);
             List<Customer> customers = new ArrayList<>();
             // loop over results
             while(res.next()){
@@ -106,6 +116,35 @@ public class CustomerQueries {
             st.setString(1,c.getFirstName());
             st.setString(2,c.getLastName());
             st.setInt(3,c.getCid());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+
+    /**
+     * Customer gets set to inactive
+     * @param c the customer
+     */
+    public static void deleteCustomer(Customer c){
+        Connection con = null;
+        PreparedStatement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.prepareStatement("" +
+                    "UPDATE customer " +
+                    "SET firstname = '[deleted]', lastname = '', active = 0 " +
+                    "WHERE cid = ?;");
+            st.setInt(1,c.getCid());
             st.executeUpdate();
         } catch (SQLException e) {
             ExceptionLog.write(e);

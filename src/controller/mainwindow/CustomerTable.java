@@ -2,7 +2,6 @@ package controller.mainwindow;
 
 import TableFilter.FilterTable;
 import TableFilter.Filterable;
-import controller.dbqueries.ArticleQueries;
 import controller.dbqueries.CustomerQueries;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -32,7 +31,7 @@ public class CustomerTable extends FilterTable<Customer> {
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
-        customerObservableList = CustomerQueries.getCustomerList();
+        customerObservableList = CustomerQueries.getCustomerList(true);
         addData(customerObservableList);
 
         getTable().setEditable(true);
@@ -78,7 +77,7 @@ public class CustomerTable extends FilterTable<Customer> {
      */
     public void updateData(){
         removeAllData();
-        customerObservableList = CustomerQueries.getCustomerList();
+        customerObservableList = CustomerQueries.getCustomerList(true);
         addData(customerObservableList);
     }
 }

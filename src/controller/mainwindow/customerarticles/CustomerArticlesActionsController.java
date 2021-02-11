@@ -30,17 +30,12 @@ public class CustomerArticlesActionsController {
 
     @FXML
     void returnNowClicked(MouseEvent event) {
-        // set end date to today
-        loan.setEndDate(LocalDate.now());
-        // set returned to true
-        loan.setReturned(true);
+        loan.returnLoan();
         //update
         LoanQueries.updateLoan(loan);
         customerArticle.update();
         // update article
-        Article a = loan.getArticle();
-        a.setAvailable(true);
-        ArticleQueries.updateArticle(a);
+        ArticleQueries.updateArticle(loan.getArticle());
         // show prompt
         ShowAlert.showInformation("Artikel wurde erfolgreich als zurückgegeben eingetragen!");
         // close Stage

@@ -127,6 +127,38 @@ public class LoanQueries {
         }
     }
     /**
+     * get all active (not returned) loans of a user
+     * @param cid the uid of the Costumer
+     * @return a List of all Loans
+     */
+    public static List<Loan> getActiveCustomerLoans(int cid){
+        Connection con = null;
+        PreparedStatement st1 = null;
+        try{
+            con = Database.getConnection();
+            st1 = con.prepareStatement("" +
+                    SELECT_LOANS +
+                    "WHERE l.cid = ? AND returned = 0;");
+            st1.setInt(1,cid);
+            ResultSet res = st1.executeQuery();
+
+            return getLoanList(res);
+
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+            return new ArrayList<>();
+        } finally {
+            try {
+                if(st1 != null)
+                    st1.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    /**
      * get all loans of a article
      * @param aid the id of the article
      * @return a List of all Loans

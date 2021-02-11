@@ -1,5 +1,8 @@
 package model;
 
+import controller.dbqueries.ArticleQueries;
+import controller.dbqueries.LoanQueries;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -44,6 +47,21 @@ public class Loan {
         this(customer, article, staff, startDate, endDate);
         this.lid = lid;
         this.returned = returned;
+    }
+    /**
+     * the loan is returned, not updated in DB
+     *  --> call
+     *      LoanQueries.updateLoan(loan);
+     *      ArticleQueries.updateArticle(loan.getArticle);
+     */
+    public void returnLoan(){
+        // set end date to today
+        this.setEndDate(LocalDate.now());
+        // set returned to true
+        this.setReturned(true);
+        // update article
+        Article a = this.getArticle();
+        a.setAvailable(true);
     }
 
     public void setLid(int lid) {
