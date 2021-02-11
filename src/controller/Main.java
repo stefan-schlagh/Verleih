@@ -12,6 +12,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Staff;
@@ -48,6 +49,7 @@ public class Main extends Application {
                 getClass().getResource("../view/mainwindow/customer.css").toExternalForm()
         );
 
+        stage.getIcons().add(new Image("view/icons/icons8-buch-ausleihen-80.png"));
         stage.setTitle("Verleih");
         stage.setScene(scene);
         stage.show();
