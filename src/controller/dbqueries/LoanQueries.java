@@ -277,6 +277,33 @@ public class LoanQueries {
                 ExceptionLog.write(e);
             }
         }
-
+    }
+    /**
+     * delete all loans of an article
+     * @param aid the id of the article
+     */
+    public static void deleteLoans(int aid) {
+        Connection con = null;
+        Statement st = null;
+        try{
+            con = Database.getConnection();
+            st = con.createStatement();
+            st.executeUpdate(
+                    "DELETE " +
+                        "FROM loan " +
+                        "WHERE aid = " + aid + ";"
+            );
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
     }
 }

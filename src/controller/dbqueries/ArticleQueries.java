@@ -127,4 +127,36 @@ public class ArticleQueries {
             }
         }
     }
+    /**
+     * The article gets deleted
+     * @param a the article
+     */
+    public static void deleteArticle(Article a){
+        //delete all loans of the user
+        LoanQueries.deleteLoans(a.getAid());
+        //delete article
+        Connection con = null;
+        Statement st = null;
+        try {
+            con = Database.getConnection();
+            st = con.createStatement();
+            st.executeUpdate(
+                    "DELETE " +
+                        "FROM article " +
+                        "WHERE aid = " + a.getAid() + ";"
+            );
+        } catch (SQLException e){
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+
+    }
 }

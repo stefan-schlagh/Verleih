@@ -62,6 +62,11 @@ public class MainController implements Initializable {
             customerTable.getCustomerProperty().addListener(new ChangeListener<Customer>() {
                 @Override
                 public void changed(ObservableValue<? extends Customer> observableValue, Customer oldValue, Customer newValue) {
+                    /*
+                        if value is null --> hide deleteCustomer
+                        else
+                            show
+                     */
                     deleteCustomer.setVisible(newValue != null);
                 }
             });
@@ -70,6 +75,18 @@ public class MainController implements Initializable {
             customerPane.setCenter(customerTable);
 
             articleTable = new ArticleTable();
+            articleTable.getArticleProperty().addListener(new ChangeListener<Article>() {
+                @Override
+                public void changed(ObservableValue<? extends Article> observableValue, Article oldValue, Article newValue) {
+                    /*
+                        if value is null --> hide deleteCustomer
+                        else
+                            show
+                     */
+                    deleteArticle.setVisible(newValue != null);
+                }
+            });
+            deleteArticle.setVisible(false);
             articlePane.setCenter(articleTable);
         } catch (IOException e){
             ExceptionLog.write(e);
@@ -117,14 +134,13 @@ public class MainController implements Initializable {
         Customer selectedCustomer = customerTable.getSelectedCustomer();
         if(LoanQueries.getActiveCustomerLoans(selectedCustomer.getCid()).size() > 0)
             ShowAlert.showInformation("Der Kunde hat noch nicht alle Artikel zurückgegeben!");
-        else
-            if(ShowAlert.showConfirmation(
-                    "Kunde " + selectedCustomer.getNameString() + " wirklich löschen?"
-                ) == ButtonType.YES) {
+        else if(ShowAlert.showConfirmation(
+                "Kunde " + selectedCustomer.getNameString() + " wirklich löschen?"
+            ) == ButtonType.YES) {
 
-                CustomerQueries.deleteCustomer(selectedCustomer);
-                customerTable.updateData();
-            }
+            CustomerQueries.deleteCustomer(selectedCustomer);
+            customerTable.updateData();
+        }
     }
 
     @FXML
@@ -151,7 +167,20 @@ public class MainController implements Initializable {
         }
     }
 
-    public void deleteArticleMouseClicked(MouseEvent event){}
+    public void deleteArticleMouseClicked(MouseEvent event){
+
+        Article selectedArticle = articleTable.getSelectedArticle();
+        if(!selectedArticle.isAvailable())
+            ShowAlert.showInformation("Artikel ist derzeit verliehen. Löschen nicht möglich!");
+        else if(
+            ShowAlert.showConfirmation(
+                    "Artikel " + selectedArticle.getName() + " wirklich löschen?"
+            ) == ButtonType.YES){
+
+            ArticleQueries.deleteArticle(selectedArticle);
+            articleTable.updateData();
+        }
+    }
 
     public void setLoggedInStaff(Property<Staff> loggedInStaff) {
         this.loggedInStaff = loggedInStaff;
@@ -166,6 +195,8 @@ public class MainController implements Initializable {
          */
         if(articleTable != null)
             articleTable.updateData();
+        //hide delete button
+        deleteArticle.setVisible(false);
     }
 
     @FXML
@@ -175,6 +206,8 @@ public class MainController implements Initializable {
          */
         if(customerTable != null)
             customerTable.updateData();
+        //hide delete button
+        deleteCustomer.setVisible(false);
     }
     /*
         delete database, initialize empty one

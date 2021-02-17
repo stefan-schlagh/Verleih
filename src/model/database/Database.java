@@ -40,8 +40,7 @@ public class Database {
                     "CREATE TABLE IF NOT EXISTS article (" +
                         "aid INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "aName TEXT, " +
-                        "available INTEGER, " +
-                        "active INTEGER DEFAULT 1" +
+                        "available INTEGER " +
                     ");");
             // customer
             con.createStatement().execute("" +

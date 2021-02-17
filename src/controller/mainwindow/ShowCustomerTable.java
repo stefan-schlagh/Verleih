@@ -36,8 +36,9 @@ public class ShowCustomerTable extends CustomerTable {
             row.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                    // is value selected?
                     if(newValue){
-
+                        //set customer selected
                         Customer c = row.getItem();
                         customerProperty.setValue(c);
                     }

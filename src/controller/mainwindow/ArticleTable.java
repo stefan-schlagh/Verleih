@@ -7,19 +7,17 @@ import controller.dbqueries.ArticleQueries;
 import controller.mainwindow.articlehistory.ArticleHistory;
 import controller.mainwindow.lendarticle.LendArticle;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import model.Article;
 import model.Staff;
-
-import javax.swing.*;
 import java.io.IOException;
 
 public class ArticleTable extends FilterTable<Article> {
@@ -32,6 +30,8 @@ public class ArticleTable extends FilterTable<Article> {
     private Property<Staff> loggedInStaff;
     private LendArticle lendArticleDialog;
     private int selectedFilter = FILTER_ALL;
+
+    private Property<Article> articleProperty = new SimpleObjectProperty<>();
 
     public ArticleTable() throws IOException {
         super("Suchen:");
@@ -121,6 +121,22 @@ public class ArticleTable extends FilterTable<Article> {
             }
         });
         getSearchBoxChildren().add(filterComboBox);
+
+        getTable().setRowFactory(articleTableView -> {
+            TableRow<Article> row = new TableRow<>();
+            row.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                    // is value selected?
+                    if(newValue){
+                        //set article selected
+                        Article a = row.getItem();
+                        articleProperty.setValue(a);
+                    }
+                }
+            });
+            return row;
+        });
     }
 
     public void addItem(Article a){
@@ -141,5 +157,17 @@ public class ArticleTable extends FilterTable<Article> {
         removeAllData();
         articleObservableList = ArticleQueries.getArticleList(selectedFilter);
         addData(articleObservableList);
+    }
+
+    public Article getSelectedArticle(){
+        return articleProperty.getValue();
+    }
+
+    public Property<Article> getArticleProperty() {
+        return articleProperty;
+    }
+
+    public void setArticleProperty(Article articleProperty) {
+        this.articleProperty.setValue(articleProperty);
     }
 }
