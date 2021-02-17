@@ -25,6 +25,13 @@ public class Customer {
                 break;
         }
     }
+    /**
+     * return a string with first and lastname
+     * @return string with first and lastname
+     */
+    public String getNameString(){
+        return getFirstName() + " " + getLastName();
+    }
 
     public int getCid() {
         return cid;

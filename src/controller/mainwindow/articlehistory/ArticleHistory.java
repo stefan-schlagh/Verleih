@@ -18,6 +18,9 @@ public class ArticleHistory extends Stage {
 
         BorderPane rootPane = new BorderPane();
         Scene scene = new Scene(rootPane,500,400);
+        // add stylesheet
+        scene.getStylesheets().add(getClass().getResource("../../../view/mainwindow/mainWindow.css").toExternalForm());
+
         setScene(scene);
 
         try {

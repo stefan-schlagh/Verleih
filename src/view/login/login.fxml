@@ -5,22 +5,29 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.login.LoginController">
+<HBox id="login-rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.login.LoginController">
    <children>
       <Separator opacity="0.0" prefHeight="7.0" prefWidth="113.0" />
-      <VBox fx:id="login_vBox" prefHeight="400.0" prefWidth="426.0">
+      <VBox prefHeight="400.0" prefWidth="426.0" spacing="5.0">
          <children>
             <Separator opacity="0.0" prefWidth="200.0" />
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
             <Label id="login-header" text="Login" />
-            <Label styleClass="login-label" text="name" />
+            <Label styleClass="login-label" text="Name" />
+            <Label fx:id="nameErrorMsg" styleClass="errorMsg" text="error" />
             <TextField fx:id="loginName" onKeyPressed="#nameKeyPressed" styleClass="login-text" />
-            <Label styleClass="login-label" text="password" />
+            <Label styleClass="login-label" text="Passwort" />
+            <Label fx:id="passwordErrorMsg" styleClass="errorMsg" text="error" />
             <PasswordField fx:id="loginPassword" onKeyPressed="#passwordKeyPressed" styleClass="login-text" />
-            <Button id="btn-submit" alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#onSubmitClick" text="Submit" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button id="btn-submit" alignment="TOP_RIGHT" contentDisplay="RIGHT" layoutX="370.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#onSubmitClick" prefHeight="35.0" prefWidth="66.0" text="Login " AnchorPane.rightAnchor="10.0" />
+               </children>
+            </AnchorPane>
             <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
          </children>
       </VBox>

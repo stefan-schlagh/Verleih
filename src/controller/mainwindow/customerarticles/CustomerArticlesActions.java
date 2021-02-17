@@ -22,7 +22,9 @@ public class CustomerArticlesActions extends Stage {
         BorderPane rootPane = new BorderPane();
         Scene scene = new Scene(rootPane);
 
+        // add stylesheets
         scene.getStylesheets().add(getClass().getResource("../../../view/mainwindow/customerArticlesActions.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../../../view/mainwindow/mainWindow.css").toExternalForm());
 
         setScene(scene);
 

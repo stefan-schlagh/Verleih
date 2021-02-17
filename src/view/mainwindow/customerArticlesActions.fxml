@@ -19,8 +19,8 @@
   </rowConstraints>
    <children>
       <Label styleClass="a-label" text="Rückgabedatum ändern" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onMouseClicked="#returnNowClicked" text="jetzt zurückgeben" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onMouseClicked="#returnNowClicked" styleClass="btn1-small" text="jetzt zurückgeben" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label fx:id="articleLabel" styleClass="header" text="Aktionen für Artikel " />
+      <Label fx:id="articleLabel" prefHeight="17.0" prefWidth="423.0" styleClass="header" text="Aktionen für Artikel " GridPane.columnSpan="2" />
    </children>
 </GridPane>
