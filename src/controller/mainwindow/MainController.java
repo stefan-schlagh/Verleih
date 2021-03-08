@@ -1,10 +1,7 @@
 package controller.mainwindow;
 
 import controller.ShowAlert;
-import controller.dbqueries.ArticleQueries;
-import controller.dbqueries.CustomerQueries;
-import controller.dbqueries.ExceptionLog;
-import controller.dbqueries.LoanQueries;
+import controller.dbqueries.*;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -25,6 +23,7 @@ import model.database.Database;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -52,6 +51,9 @@ public class MainController implements Initializable {
 
     @FXML
     private Button deleteCustomer;
+
+    @FXML
+    private Label usernameLabel;
 
     private Property<Staff> loggedInStaff;
 
@@ -186,6 +188,14 @@ public class MainController implements Initializable {
         this.loggedInStaff = loggedInStaff;
         //set loggedInStaff further down
         articleTable.setLoggedInStaff(loggedInStaff);
+        // set username
+        usernameLabel.setText("Benutzername: " + loggedInStaff.getValue().getName());
+        this.loggedInStaff.addListener(new ChangeListener<Staff>() {
+            @Override
+            public void changed(ObservableValue<? extends Staff> observableValue, Staff oldValue, Staff newValue) {
+                usernameLabel.setText("Benutzername: " + newValue.getName());
+            }
+        });
     }
 
     @FXML
@@ -209,6 +219,31 @@ public class MainController implements Initializable {
         //hide delete button
         deleteCustomer.setVisible(false);
     }
+
+    @FXML
+    void changePassword(MouseEvent event) {
+        // input new password
+        PasswordInputDialog dialog = new PasswordInputDialog();
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(password -> {
+            if(password.equals("err"))
+                ShowAlert.showInformation("Fehler!");
+            else if(password.equals("neq"))
+                ShowAlert.showInformation("Passwörter stimmen nicht überein!");
+            /*
+                check password length
+                    length has to be greater than or equal to 8
+             */
+            else if(password.length() < 8)
+                ShowAlert.showInformation("Passwort zu kurz!");
+            // set new password
+            else {
+                StaffQueries.setPassword(loggedInStaff.getValue().getSid(), password);
+                ShowAlert.showInformation("Passwort wurde geändert!");
+            }
+        });
+    }
+
     /*
         delete database, initialize empty one
      */

@@ -18,14 +18,17 @@ public class ExceptionLog {
             pw.println(df.format(d));
             //print error
             pw.println(e.getMessage());
-            pw.println(new Date(System.currentTimeMillis()).toLocaleString());
             e.printStackTrace(pw);
             pw.println();
 
             pw.flush();
             pw.close();
-        } catch (IOException e1) {
+
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.out.println("---------------------------");
+        } catch (IOException e1) {
+            System.out.println(e1.getMessage());
         }
     }
 }
