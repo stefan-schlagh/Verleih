@@ -166,11 +166,52 @@ public class StaffQueries {
         }
         return false;
     }
-    public static String hash(String password){
+    /**
+     * set a new password
+     * @param id the id of the staff members
+     * @param password the new password
+     */
+    public static void setPassword(int id,String password){
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Database.getConnection();
+            st = con.prepareStatement("" +
+                    "UPDATE staff " +
+                    "SET password = ?" +
+                    "WHERE sid = ?;");
+            st.setString(1, hash(password));
+            st.setInt(2,id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            ExceptionLog.write(e);
+        } finally {
+            try {
+                if(st != null)
+                    st.close();
+                if(con != null)
+                    con.close();
+            } catch (SQLException e) {
+                ExceptionLog.write(e);
+            }
+        }
+    }
+    /**
+     * hash a password
+     * @param password the password to be hashed
+     * @return the hashed password
+     */
+    private static String hash(String password){
         // Hash a password for the first time
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
-    public static boolean checkPW(String candidate,String hashed){
+    /**
+     * check a password
+     * @param candidate the unencrypted password to be checked
+     * @param hashed the hashed password
+     * @return is the password right?
+     */
+    private static boolean checkPW(String candidate,String hashed){
         return BCrypt.checkpw(candidate, hashed);
     }
 }
